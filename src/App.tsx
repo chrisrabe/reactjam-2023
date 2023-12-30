@@ -4,6 +4,7 @@ import {Container, Stage} from "@pixi/react";
 import {APPLICATION_OPTIONS} from "./config/pixi-config.ts";
 import World from "./components/common/World";
 import Shape from "./components/common/Shape";
+import Kayak from "./components/game/Kayak";
 
 function App() {
   const [game, setGame] = useState<GameState>()
@@ -52,17 +53,7 @@ function App() {
               options={{ isStatic: true }}
             />
           </Container>
-          <Shape
-            type="circle"
-            fillStyle={['yellow', 0.5]}
-            config={{ x: 0, y: 20, radius: 20 + Math.random() * 100 }}
-            options={{
-              friction: 0.8,
-              density: 0.00001,
-              restitution: 0.4,
-              stiffness: 1
-            }}
-          />
+          <Kayak x={window.innerWidth / 2} y={window.innerHeight / 2} width={50} height={100}/>
         </React.Fragment>
       </World>
     </Stage>

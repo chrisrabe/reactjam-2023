@@ -1,4 +1,4 @@
-import React, {createContext, ReactNode, useContext, useState} from "react";
+import React, {createContext, ReactNode, useContext, useEffect, useState} from "react";
 import {Engine} from "matter-js";
 import {useTick} from "@pixi/react";
 
@@ -12,6 +12,14 @@ interface WorldProps {
 const World: React.FC<WorldProps> = ({children}) => {
   const [engine] = useState(() => Engine.create());
   useTick(delta => Engine.update(engine, delta * (1000 / 60)))
+
+  useEffect(() => {
+    if (engine) {
+      engine.gravity.x = 0
+      engine.gravity.y = 0
+    }
+  }, [engine]);
+
   return <EngineContext.Provider value={engine}>{children}</EngineContext.Provider>
 };
 

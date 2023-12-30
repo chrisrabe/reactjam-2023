@@ -2,12 +2,12 @@ import React, {useEffect, useRef} from "react";
 import {useEngine} from "../World";
 import {Graphics, useTick} from "@pixi/react";
 import { Graphics as PixiGraphics } from "pixi.js"
-import {Bodies, Body, Composite} from "matter-js";
+import {Bodies, Body, Composite, IBodyDefinition} from "matter-js";
 
 interface ShapeProps {
   type: "rectangle" | "circle" | "polygon" | "trapezoid"
   config: any
-  options: any
+  options: IBodyDefinition
   lineStyle?: any
   fillStyle?: any
 }
