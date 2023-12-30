@@ -18,33 +18,6 @@ const Kayak: React.FC<KayakProps> = ({x, y, width, height}) => {
   const body = useRef<Body>()
   const graphics = useRef<PixiGraphics>(null)
   const forcePointApplication = useRef<Vector2D>()
-  const keyPressed = useRef<Record<string, boolean>>({})
-
-  const moveForward = (b: Body) => {
-    const forceMagnitude = 0.005 * b.mass
-
-    // Extend the point a bit further behind the kayak
-    const extensionBeyondStern = 5;  // Adjust this value based on your requirement
-
-    forcePointApplication.current = {
-      x: b.position.x - (width + extensionBeyondStern) * Math.sin(b.angle),
-      y: b.position.y + (height + extensionBeyondStern) * Math.cos(b.angle)
-
-    }
-    Body.applyForce(b, forcePointApplication.current, {
-      x: Math.cos(b.angle) * forceMagnitude,
-      y: Math.sin(b.angle) * forceMagnitude
-    })
-  }
-
-  const turnKayak = (b: Body, direction: number) => {
-    const torqueMagnitude = 0.01
-    // Body.setAngularVelocity(b, 0)
-    Body.applyForce(b, b.position, {
-      x: 0,
-      y: direction * torqueMagnitude
-    })
-  }
 
   const draw = (g: PixiGraphics, b: Body) => {
     g.clear()
@@ -59,6 +32,11 @@ const Kayak: React.FC<KayakProps> = ({x, y, width, height}) => {
     g.lineTo(startPos.x, startPos.y)
     g.endFill()
 
+    // Draw center of mass
+    g.beginFill('red')
+    g.drawCircle(b.position.x, b.position.y, width / 4)
+    g.endFill()
+
     // Draw impulse
     if (forcePointApplication.current) {
       const f = forcePointApplication.current
@@ -69,18 +47,28 @@ const Kayak: React.FC<KayakProps> = ({x, y, width, height}) => {
     }
   }
 
-  const move = (b: Body) => {
-    const pressed = keyPressed.current
+  const getForceMagnitude = (bz: number, fz: number, mass: number) => {
+    const forceMagnitude = 0.001 * mass
+    if (bz === fz) return 0
+    if (bz < fz) return -forceMagnitude
+    return forceMagnitude
+  }
 
-    if(pressed[CODE_W]) {
-      moveForward(b)
+  const move = (b: Body) => {
+    const f = forcePointApplication.current
+
+    if(f) {
+      const forceDirection: Vector2D = {
+        x: getForceMagnitude(b.position.x, f.x, b.mass),
+        y: getForceMagnitude(b.position.y, f.y, b.mass),
+      }
+
+      Body.applyForce(b, f, forceDirection)
     }
-    if(pressed[CODE_A]) {
-      turnKayak(b, -1)
-    }
-    if(pressed[CODE_D]) {
-      turnKayak(b, 1)
-    }
+  }
+
+  const reset = () => {
+    forcePointApplication.current = undefined
   }
 
   useTick( ()=> {
@@ -91,6 +79,7 @@ const Kayak: React.FC<KayakProps> = ({x, y, width, height}) => {
 
     move(b)
     draw(g, b)
+    reset()
   })
 
   useEffect(() => {
@@ -99,27 +88,27 @@ const Kayak: React.FC<KayakProps> = ({x, y, width, height}) => {
     body.current = Bodies.rectangle(x, y, width, height, {
       friction: 0.02,
       frictionAir: 0.02,
-      density: 0.001
+      density: 0.01
     })
 
     Composite.add(engine.world, body.current)
   }, [engine, height, width, x, y]);
 
-  const onKeyDown = (event: KeyboardEvent) => {
-    keyPressed.current[event.code] = true
-  }
+  const onMouseUp = (event: MouseEvent) => {
+    const mouseX = event.clientX
+    const mouseY = event.clientY
 
-  const onKeyUp = (event: KeyboardEvent) => {
-    keyPressed.current[event.code] = false
+    forcePointApplication.current = {
+      x: mouseX,
+      y: mouseY
+    }
   }
 
   useEffect(() => {
-    document.addEventListener('keydown', onKeyDown)
-    document.addEventListener('keyup', onKeyUp)
+    document.addEventListener('mouseup', onMouseUp)
 
     return () => {
-      document.removeEventListener('keydown', onKeyDown)
-      document.removeEventListener('keyup', onKeyUp)
+      document.removeEventListener('mouseup', onMouseUp)
     }
   }, []);
 
