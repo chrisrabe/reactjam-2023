@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import reactLogo from "./assets/rune.svg"
-import viteLogo from "/vite.svg"
 import { GameState } from "./logic.ts"
+import {Stage} from "@pixi/react";
+import {APPLICATION_OPTIONS} from "./config/pixi-config.ts";
 
 function App() {
   const [game, setGame] = useState<GameState>()
@@ -19,7 +19,7 @@ function App() {
   }
 
   return (
-    <div>hello world</div>
+    <Stage width={window.innerWidth} height={window.innerHeight} options={APPLICATION_OPTIONS}></Stage>
   )
 }
 
