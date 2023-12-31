@@ -6,10 +6,13 @@ interface PlayerControlHookProps {
   onRotateLeft: () => void
   onRotateRight: () => void
   onMoveForward: () => void
+  disabled?: boolean
 }
 
-const usePlayerControls = ({onRotateLeft, onRotateRight, onMoveForward}: PlayerControlHookProps) => {
+const usePlayerControls = ({onRotateLeft, onRotateRight, onMoveForward, disabled}: PlayerControlHookProps) => {
   useEffect(() => {
+    if(disabled) return;
+
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.code === CODE_D) onRotateRight();
       if (event.code === CODE_A) onRotateLeft();
@@ -28,7 +31,7 @@ const usePlayerControls = ({onRotateLeft, onRotateRight, onMoveForward}: PlayerC
       document.removeEventListener(LEFT_PRESSED, onRotateLeft)
       document.removeEventListener(RIGHT_PRESSED, onRotateRight)
     };
-  }, [onRotateLeft, onRotateRight, onMoveForward]);
+  }, [onRotateLeft, onRotateRight, onMoveForward, disabled]);
 };
 
 export default usePlayerControls;

@@ -10,11 +10,12 @@ interface KayakProps {
   y: number
   width: number
   height: number
+  isNPC?: boolean
 }
 
 const PADDLE_FORCE_MAGNITUDE = 0.02
 
-const Kayak: React.FC<KayakProps> = ({x, y, width, height}) => {
+const Kayak: React.FC<KayakProps> = ({x, y, width, height, isNPC = false}) => {
   const engine = useEngine();
   const body = useRectPhysicsBody({engine, x, y, width, height})
 
@@ -42,7 +43,8 @@ const Kayak: React.FC<KayakProps> = ({x, y, width, height}) => {
   usePlayerControls({
     onRotateLeft,
     onRotateRight,
-    onMoveForward
+    onMoveForward,
+    disabled: isNPC
   })
 
   return <KayakGraphics bodyRef={body} width={width} height={height} />
