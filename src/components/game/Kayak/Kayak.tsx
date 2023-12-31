@@ -3,8 +3,7 @@ import {useEngine} from "../../common/World";
 import {Bodies, Body, Composite} from "matter-js";
 import {Graphics as PixiGraphics} from "pixi.js";
 import {Graphics, useTick} from "@pixi/react";
-import Vector2D from "../../../types/Vector2D.ts";
-import {CODE_S, CODE_W} from "keycode-js";
+import {CODE_A, CODE_D, CODE_W} from "keycode-js";
 
 interface KayakProps {
   x: number
@@ -14,50 +13,44 @@ interface KayakProps {
 }
 
 const PADDLE_FORCE_MAGNITUDE = 0.02
-enum Direction {
-  FORWARD = -1,
-  BACKWARD = 1
-}
+const tapThreshold = 200; // 200 ms
 
 const Kayak: React.FC<KayakProps> = ({x, y, width, height}) => {
   const engine = useEngine();
   const body = useRef<Body>()
   const graphics = useRef<PixiGraphics>(null)
   const keyPressed = useRef<Record<string, boolean>>({})
+  const pointerDownTime = useRef<number>(0)
 
   const draw = (g: PixiGraphics, b: Body) => {
-    g.clear()
-    g.beginFill('yellow')
+    g.clear();
 
-    const startPos = b.vertices[0]
-    g.moveTo(startPos.x, startPos.y)
-    for (let j = 1; j < b.vertices.length; j++) {
-      const drawPos = b.vertices[j]
-      g.lineTo(drawPos.x, drawPos.y)
-    }
-    g.lineTo(startPos.x, startPos.y)
-    g.endFill()
+    // Set the position and rotation of the PIXI graphics to match the body
+    g.position.set(b.position.x, b.position.y);
+    g.rotation = b.angle; // Match the rotation of the body
 
-    // Draw center of mass
-    g.beginFill('red')
-    g.drawCircle(b.position.x, b.position.y, width / 4)
-    g.endFill()
+    // Draw the ellipse
+    // Assuming 'width' and 'height' are defined elsewhere in your scope
+    g.beginFill(0xffff00); // Using numeric color for PIXI
+    g.drawEllipse(0, 0, width / 2, height /2); // Draw ellipse at origin
+    g.endFill();
+
   }
 
-  const moveVertical = (b: Body, direction: Direction) => {
+  const moveForward = (b: Body) => {
     const force = {
       x: Math.sin(b.angle) * PADDLE_FORCE_MAGNITUDE,
-      y: Math.cos(b.angle) * PADDLE_FORCE_MAGNITUDE * direction
+      y: Math.cos(b.angle) * PADDLE_FORCE_MAGNITUDE * -1
     }
     Body.applyForce(b, b.position, force)
   }
 
   const move = (b: Body) => {
-    if(keyPressed.current[CODE_W]) {
-      moveVertical(b, Direction.FORWARD)
+    if(keyPressed.current[CODE_D]) {
+      Body.setAngularVelocity(b, PADDLE_FORCE_MAGNITUDE)
     }
-    if (keyPressed.current[CODE_S]) {
-      moveVertical(b, Direction.BACKWARD)
+    if(keyPressed.current[CODE_A]) {
+      Body.setAngularVelocity(b, -PADDLE_FORCE_MAGNITUDE)
     }
   }
 
@@ -91,13 +84,32 @@ const Kayak: React.FC<KayakProps> = ({x, y, width, height}) => {
     keyPressed.current[event.code] = false
   }
 
+  const onPointerDown = () => {
+    pointerDownTime.current = Date.now()
+  }
+
+  const onPointerUp = () => {
+    if(!body.current) return
+
+    const pointerUpTime = Date.now()
+    const duration = pointerUpTime - pointerDownTime.current
+
+    if(duration < tapThreshold) {
+      moveForward(body.current)
+    }
+  }
+
   useEffect(() => {
     document.addEventListener('keydown', onKeyDown)
     document.addEventListener('keyup', onKeyUp)
+    document.addEventListener('pointerdown', onPointerDown)
+    document.addEventListener('pointerup', onPointerUp)
 
     return () => {
       document.removeEventListener('keydown', onKeyDown)
       document.removeEventListener('keyup', onKeyUp)
+      document.removeEventListener('pointerdown', onPointerDown)
+      document.removeEventListener('pointerup', onPointerUp)
     }
   }, []);
 
