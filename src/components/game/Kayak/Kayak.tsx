@@ -4,6 +4,7 @@ import {Bodies, Body, Composite} from "matter-js";
 import {Graphics as PixiGraphics} from "pixi.js";
 import {Graphics, useTick} from "@pixi/react";
 import {CODE_A, CODE_D, CODE_W} from "keycode-js";
+import Vector2D from "../../../types/Vector2D.ts";
 
 interface KayakProps {
   x: number
@@ -13,7 +14,8 @@ interface KayakProps {
 }
 
 const PADDLE_FORCE_MAGNITUDE = 0.02
-const tapThreshold = 200; // 200 ms
+const TAP_THRESHOLD = 200; // 200 ms
+const SWIPE_THRESHOLD = 50; // distance for valid swipe
 
 const Kayak: React.FC<KayakProps> = ({x, y, width, height}) => {
   const engine = useEngine();
@@ -21,6 +23,7 @@ const Kayak: React.FC<KayakProps> = ({x, y, width, height}) => {
   const graphics = useRef<PixiGraphics>(null)
   const keyPressed = useRef<Record<string, boolean>>({})
   const pointerDownTime = useRef<number>(0)
+  const swipeStartX = useRef<number>(0)
 
   const draw = (g: PixiGraphics, b: Body) => {
     g.clear();
@@ -84,19 +87,34 @@ const Kayak: React.FC<KayakProps> = ({x, y, width, height}) => {
     keyPressed.current[event.code] = false
   }
 
-  const onPointerDown = () => {
+  const onPointerDown = (event: PointerEvent) => {
     pointerDownTime.current = Date.now()
+    swipeStartX.current = event.clientX
   }
 
-  const onPointerUp = () => {
+  const handleSwipe = (startX: number, endX: number, b: Body) => {
+    const deltaX = endX - startX
+    if (Math.abs(deltaX) > SWIPE_THRESHOLD) {
+      if (deltaX > 0) {
+        Body.setAngularVelocity(b, PADDLE_FORCE_MAGNITUDE)
+      } else {
+        Body.setAngularVelocity(b, -PADDLE_FORCE_MAGNITUDE)
+      }
+    }
+  }
+
+  const onPointerUp = (event: PointerEvent) => {
     if(!body.current) return
 
     const pointerUpTime = Date.now()
     const duration = pointerUpTime - pointerDownTime.current
+    const swipeEndX = event.clientX
 
-    if(duration < tapThreshold) {
+    if(duration < TAP_THRESHOLD) {
       moveForward(body.current)
     }
+
+    handleSwipe(swipeStartX.current, swipeEndX, body.current)
   }
 
   useEffect(() => {
