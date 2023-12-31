@@ -3,8 +3,8 @@ import {useEngine} from "../../common/World";
 import {Bodies, Body, Composite} from "matter-js";
 import {Graphics as PixiGraphics} from "pixi.js";
 import {Graphics, useTick} from "@pixi/react";
-import {CODE_A, CODE_D, CODE_W} from "keycode-js";
-import Vector2D from "../../../types/Vector2D.ts";
+import {CODE_A, CODE_D} from "keycode-js";
+import {LEFT_PRESSED, RIGHT_PRESSED, TAPPED} from "../../../config/events.ts";
 
 interface KayakProps {
   x: number
@@ -14,16 +14,12 @@ interface KayakProps {
 }
 
 const PADDLE_FORCE_MAGNITUDE = 0.02
-const TAP_THRESHOLD = 200; // 200 ms
-const SWIPE_THRESHOLD = 50; // distance for valid swipe
 
 const Kayak: React.FC<KayakProps> = ({x, y, width, height}) => {
   const engine = useEngine();
   const body = useRef<Body>()
   const graphics = useRef<PixiGraphics>(null)
   const keyPressed = useRef<Record<string, boolean>>({})
-  const pointerDownTime = useRef<number>(0)
-  const swipeStartX = useRef<number>(0)
 
   const draw = (g: PixiGraphics, b: Body) => {
     g.clear();
@@ -48,12 +44,22 @@ const Kayak: React.FC<KayakProps> = ({x, y, width, height}) => {
     Body.applyForce(b, b.position, force)
   }
 
-  const move = (b: Body) => {
+  const rotateLeft = () => {
+    if(!body.current) return
+    Body.setAngularVelocity(body.current, -PADDLE_FORCE_MAGNITUDE)
+  }
+
+  const rotateRight = () => {
+    if(!body.current) return
+    Body.setAngularVelocity(body.current, PADDLE_FORCE_MAGNITUDE)
+  }
+
+  const rotateFromKeyboard = () => {
     if(keyPressed.current[CODE_D]) {
-      Body.setAngularVelocity(b, PADDLE_FORCE_MAGNITUDE)
+      rotateRight()
     }
     if(keyPressed.current[CODE_A]) {
-      Body.setAngularVelocity(b, -PADDLE_FORCE_MAGNITUDE)
+      rotateLeft()
     }
   }
 
@@ -63,7 +69,7 @@ const Kayak: React.FC<KayakProps> = ({x, y, width, height}) => {
 
     if(!g || !b) return
 
-    move(b)
+    rotateFromKeyboard()
     draw(g, b)
   })
 
@@ -87,47 +93,22 @@ const Kayak: React.FC<KayakProps> = ({x, y, width, height}) => {
     keyPressed.current[event.code] = false
   }
 
-  const onPointerDown = (event: PointerEvent) => {
-    pointerDownTime.current = Date.now()
-    swipeStartX.current = event.clientX
-  }
-
-  const handleSwipe = (startX: number, endX: number, b: Body) => {
-    const deltaX = endX - startX
-    if (Math.abs(deltaX) > SWIPE_THRESHOLD) {
-      if (deltaX > 0) {
-        Body.setAngularVelocity(b, PADDLE_FORCE_MAGNITUDE)
-      } else {
-        Body.setAngularVelocity(b, -PADDLE_FORCE_MAGNITUDE)
-      }
-    }
-  }
-
-  const onPointerUp = (event: PointerEvent) => {
+  const onTap = () => {
     if(!body.current) return
-
-    const pointerUpTime = Date.now()
-    const duration = pointerUpTime - pointerDownTime.current
-    const swipeEndX = event.clientX
-
-    if(duration < TAP_THRESHOLD) {
-      moveForward(body.current)
-    }
-
-    handleSwipe(swipeStartX.current, swipeEndX, body.current)
+    moveForward(body.current)
   }
 
   useEffect(() => {
     document.addEventListener('keydown', onKeyDown)
     document.addEventListener('keyup', onKeyUp)
-    document.addEventListener('pointerdown', onPointerDown)
-    document.addEventListener('pointerup', onPointerUp)
+    document.addEventListener(TAPPED, onTap)
+    document.addEventListener(LEFT_PRESSED, rotateLeft)
+    document.addEventListener(RIGHT_PRESSED, rotateRight)
 
     return () => {
       document.removeEventListener('keydown', onKeyDown)
       document.removeEventListener('keyup', onKeyUp)
-      document.removeEventListener('pointerdown', onPointerDown)
-      document.removeEventListener('pointerup', onPointerUp)
+      document.removeEventListener(TAPPED, onTap)
     }
   }, []);
 
