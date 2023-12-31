@@ -4,8 +4,8 @@ import {Container,Stage} from "@pixi/react";
 import {APPLICATION_OPTIONS} from "./config/pixi-config.ts";
 import World from "./components/common/World";
 import Shape from "./components/common/Shape";
-import Players from "./components/game/Players";
 import Controls from "./components/game/Controls";
+import Kayak from "./components/game/Kayak";
 
 function App() {
   const [game, setGame] = useState<GameState>()
@@ -54,7 +54,9 @@ function App() {
               options={{ isStatic: true }}
             />
           </Container>
-          <Players />
+          <Container name="players">
+            <Kayak x={window.innerWidth / 2} y={window.innerHeight / 2} width={25} height={50}/>
+          </Container>
         </World>
       </Stage>
       <Controls />
