@@ -1,11 +1,13 @@
-import { useEffect, useRef, useState } from "react";
-import { GameActions, GameState } from "./logic/types.ts";
+import { useRef, useState } from "react";
+import { GameState } from "./logic/types.ts";
 import { Stage } from "@pixi/react";
-import ShipGraphics from "./components/Ship";
+import Ship from "./components/Ship";
 import Controls from "./components/Controls";
-import { GAME_STATE_CHANGED } from "./utils/events.ts";
-import { OnChange } from "rune-games-sdk";
 import useRuneClient from "./hooks/useRuneClient.ts";
+import Bullets from "./components/Bullets";
+import useGameStateListener, {
+  ChangeParams,
+} from "./hooks/useGameStateListener.ts";
 
 function App() {
   const width = window.innerWidth;
@@ -15,23 +17,18 @@ function App() {
   const rotationInterpolator = useRef(Rune.interpolator<number>());
   useRuneClient();
 
-  useEffect(() => {
-    document.addEventListener(GAME_STATE_CHANGED, (event) => {
-      console.log(event);
-      const e = event as CustomEvent;
-      const params = e.detail;
-      const { game, futureGame } = params;
-
-      rotationInterpolator.current.update({
-        game: game.ship.rotation,
-        futureGame: futureGame?.desiredRotation
-          ? futureGame.desiredRotation
-          : game.ship.rotation,
-      });
-
-      setGame(game);
+  const onGameStateChange = ({ game, futureGame }: ChangeParams) => {
+    rotationInterpolator.current.update({
+      game: game.ship.rotation,
+      futureGame: futureGame?.desiredRotation
+        ? futureGame.desiredRotation
+        : game.ship.rotation,
     });
-  }, []);
+
+    setGame(game);
+  };
+
+  useGameStateListener({ onGameStateChange });
 
   if (!game) {
     return <div>Loading...</div>;
@@ -46,13 +43,14 @@ function App() {
           background: "18181B",
         }}
       >
-        <ShipGraphics
+        <Ship
           x={game.ship.position.x}
           y={game.ship.position.y}
           size={game.ship.size}
           rotation={rotationInterpolator.current.getPosition()}
           hasControls
         />
+        <Bullets bullets={game.bullets} />
       </Stage>
       <Controls />
     </>

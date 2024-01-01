@@ -16,6 +16,7 @@ Rune.initLogic({
         rotation: 0,
         size: SHIP_SIZE,
       },
+      bullets: {},
     };
   },
   actions: {
