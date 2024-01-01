@@ -1,29 +1,35 @@
 import { useEffect, useRef, useState } from "react";
-import { GameState } from "./logic/types.ts";
+import { GameActions, GameState } from "./logic/types.ts";
 import { Stage } from "@pixi/react";
 import ShipGraphics from "./components/Ship";
 import Controls from "./components/Controls";
+import { GAME_STATE_CHANGED } from "./utils/events.ts";
+import { OnChange } from "rune-games-sdk";
+import useRuneClient from "./hooks/useRuneClient.ts";
 
 function App() {
-  const [game, setGame] = useState<GameState>();
-  const rotationInterpolator = useRef(Rune.interpolator<number>());
   const width = window.innerWidth;
   const height = window.innerHeight;
 
+  const [game, setGame] = useState<GameState>();
+  const rotationInterpolator = useRef(Rune.interpolator<number>());
+  useRuneClient();
+
   useEffect(() => {
-    Rune.initClient({
-      onChange: (params) => {
-        const game = params.game;
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const futureGame = params.futureGame!;
+    document.addEventListener(GAME_STATE_CHANGED, (event) => {
+      console.log(event);
+      const e = event as CustomEvent;
+      const params = e.detail;
+      const { game, futureGame } = params;
 
-        rotationInterpolator.current.update({
-          game: game.ship.rotation,
-          futureGame: futureGame.ship.rotation,
-        });
+      rotationInterpolator.current.update({
+        game: game.ship.rotation,
+        futureGame: futureGame?.desiredRotation
+          ? futureGame.desiredRotation
+          : game.ship.rotation,
+      });
 
-        setGame(params.game);
-      },
+      setGame(game);
     });
   }, []);
 

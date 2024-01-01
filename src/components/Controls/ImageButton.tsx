@@ -42,7 +42,8 @@ const ImageButton: React.FC<ImageButtonProps> = ({
       <img
         src={image}
         alt="Button"
-        style={{ width: "inherit", height: "inherit" }}
+        style={{ width: "inherit", height: "inherit", pointerEvents: "none" }}
+        unselectable="on"
       />
     </button>
   );

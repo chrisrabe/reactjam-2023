@@ -16,7 +16,7 @@ export interface Vector2D {
   y: number;
 }
 
-type GameActions = {
+export type GameActions = {
   rotate: (rotationSpeed: number) => void;
 };
 
