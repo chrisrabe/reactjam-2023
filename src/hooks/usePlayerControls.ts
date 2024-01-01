@@ -1,37 +1,28 @@
-import {useEffect} from "react";
-import {CODE_D, CODE_A} from "keycode-js";
-import {LEFT_PRESSED, RIGHT_PRESSED, TAPPED} from "../config/events.ts";
+import { useEffect } from "react";
+import { MOVE_LEFT, MOVE_RIGHT } from "../utils/events.ts";
 
 interface PlayerControlHookProps {
-  onRotateLeft: () => void
-  onRotateRight: () => void
-  onMoveForward: () => void
-  disabled?: boolean
+  onRotateLeft: () => void;
+  onRotateRight: () => void;
+  disabled?: boolean;
 }
 
-const usePlayerControls = ({onRotateLeft, onRotateRight, onMoveForward, disabled}: PlayerControlHookProps) => {
+const usePlayerControls = ({
+  onRotateLeft,
+  onRotateRight,
+  disabled,
+}: PlayerControlHookProps) => {
   useEffect(() => {
-    if(disabled) return;
+    if (disabled) return;
 
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.code === CODE_D) onRotateRight();
-      if (event.code === CODE_A) onRotateLeft();
-    };
-
-    const onTap = () => onMoveForward();
-
-    document.addEventListener('keydown', onKeyDown);
-    document.addEventListener(TAPPED, onTap);
-    document.addEventListener(LEFT_PRESSED, onRotateLeft)
-    document.addEventListener(RIGHT_PRESSED, onRotateRight)
+    document.addEventListener(MOVE_LEFT, onRotateLeft);
+    document.addEventListener(MOVE_RIGHT, onRotateRight);
 
     return () => {
-      document.removeEventListener('keydown', onKeyDown);
-      document.removeEventListener(TAPPED, onTap);
-      document.removeEventListener(LEFT_PRESSED, onRotateLeft)
-      document.removeEventListener(RIGHT_PRESSED, onRotateRight)
+      document.removeEventListener(MOVE_LEFT, onRotateLeft);
+      document.removeEventListener(MOVE_RIGHT, onRotateRight);
     };
-  }, [onRotateLeft, onRotateRight, onMoveForward, disabled]);
+  }, [onRotateLeft, onRotateRight, disabled]);
 };
 
 export default usePlayerControls;

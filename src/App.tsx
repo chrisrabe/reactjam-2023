@@ -1,67 +1,46 @@
-import React, { useEffect, useState } from "react"
-import { GameState } from "./logic.ts"
-import {Container,Stage} from "@pixi/react";
-import {APPLICATION_OPTIONS} from "./config/pixi-config.ts";
-import World from "./components/common/World";
-import Shape from "./components/common/Shape";
-import Controls from "./components/game/Controls";
-import Kayak from "./components/game/Kayak";
+import { useEffect, useState } from "react";
+import { GameState } from "./logic/types.ts";
+import { Stage } from "@pixi/react";
+import ShipGraphics from "./components/Ship";
+import Controls from "./components/Controls";
 
 function App() {
-  const [game, setGame] = useState<GameState>()
-  const width = window.innerWidth
-  const height = window.innerHeight
+  const [game, setGame] = useState<GameState>();
+  const width = window.innerWidth;
+  const height = window.innerHeight;
 
   useEffect(() => {
     Rune.initClient({
       onChange: ({ game }) => {
-        setGame(game)
+        setGame(game);
       },
-    })
-  }, [])
+    });
+  }, []);
 
   if (!game) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>;
   }
 
   return (
     <>
-      <Stage width={width} height={height} options={APPLICATION_OPTIONS}>
-        <World>
-          <Container name="bounds">
-            <Shape
-              key="bottom"
-              type="rectangle"
-              config={{ x: width / 2, y: height + 50, width, height: 100 }}
-              options={{ isStatic: true }}
-            />
-            <Shape
-              key="top"
-              type="rectangle"
-              config={{ x: width / 2, y: -50, width, height: 100 }}
-              options={{ isStatic: true }}
-            />
-            <Shape
-              key="left"
-              type="rectangle"
-              config={{ x: -50, y: height/2, width: 100, height }}
-              options={{ isStatic: true }}
-            />
-            <Shape
-              key="right"
-              type="rectangle"
-              config={{ x: width + 50, y: height/2, width: 100, height }}
-              options={{ isStatic: true }}
-            />
-          </Container>
-          <Container name="players">
-            <Kayak x={window.innerWidth / 2} y={window.innerHeight / 2} width={25} height={50} />
-          </Container>
-        </World>
+      <Stage
+        width={width}
+        height={height}
+        options={{
+          background: "18181B",
+        }}
+      >
+        <ShipGraphics
+          x={game.ship.position.x}
+          y={game.ship.position.y}
+          size={game.ship.size}
+          rotation={game.ship.rotation}
+          hasControls
+        />
       </Stage>
       <Controls />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
