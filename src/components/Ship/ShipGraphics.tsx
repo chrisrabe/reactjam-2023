@@ -34,14 +34,14 @@ const ShipGraphics: React.FC<ShipGraphicsProps> = ({
 
     // Tip of ship
     g.beginFill("EF4444");
-    g.moveTo(0, -halfSize - tipSize);
-    g.lineTo(-tipSize / 2, -halfSize);
-    g.lineTo(tipSize / 2, -halfSize);
-    g.lineTo(0, -halfSize - tipSize);
+    g.moveTo(0, -halfSize);
+    g.lineTo(-tipSize / 2, -halfSize + tipSize);
+    g.lineTo(tipSize / 2, -halfSize + tipSize);
+    g.lineTo(0, -halfSize);
     g.endFill();
   };
 
-  return <Graphics draw={draw} anchor={0.1} />;
+  return <Graphics draw={draw} anchor={0.5} />;
 };
 
 export default ShipGraphics;
