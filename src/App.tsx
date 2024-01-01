@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { GameState } from "./logic";
+import { GameState } from "./logic/types.ts";
+import { Stage } from "@pixi/react";
 
 function App() {
   const [game, setGame] = useState<GameState>();
@@ -15,7 +16,15 @@ function App() {
     return <div>Loading...</div>;
   }
 
-  return <div>Hello world</div>;
+  return (
+    <Stage
+      width={window.innerWidth}
+      height={window.innerHeight}
+      options={{
+        background: "18181B",
+      }}
+    />
+  );
 }
 
 export default App;
