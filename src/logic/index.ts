@@ -7,6 +7,7 @@ Rune.initLogic({
   maxPlayers: 4,
   setup: (): GameState => {
     return {
+      desiredRotation: null,
       ship: {
         position: {
           x: window.innerWidth / 2,
@@ -19,8 +20,14 @@ Rune.initLogic({
   },
   actions: {
     rotate: (rotationSpeed, { game }) => {
-      game.ship.rotation += rotationSpeed;
+      game.desiredRotation = game.ship.rotation + rotationSpeed;
     },
+  },
+  update: ({ game }) => {
+    if (game.desiredRotation !== null) {
+      game.ship.rotation = game.desiredRotation;
+      game.desiredRotation = null;
+    }
   },
   updatesPerSecond: 30,
 });

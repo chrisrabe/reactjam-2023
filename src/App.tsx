@@ -4,6 +4,8 @@ import { Stage } from "@pixi/react";
 import ShipGraphics from "./components/Ship";
 import Controls from "./components/Controls";
 
+const rotationInterpolator = Rune.interpolator<number>();
+
 function App() {
   const [game, setGame] = useState<GameState>();
   const width = window.innerWidth;
@@ -11,8 +13,17 @@ function App() {
 
   useEffect(() => {
     Rune.initClient({
-      onChange: ({ game }) => {
-        setGame(game);
+      onChange: (params) => {
+        const game = params.game;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const futureGame = params.futureGame!;
+
+        rotationInterpolator.update({
+          game: game.ship.rotation,
+          futureGame: futureGame.ship.rotation,
+        });
+
+        setGame(params.game);
       },
     });
   }, []);
@@ -34,7 +45,7 @@ function App() {
           x={game.ship.position.x}
           y={game.ship.position.y}
           size={game.ship.size}
-          rotation={game.ship.rotation}
+          rotation={rotationInterpolator.getPosition()}
           hasControls
         />
       </Stage>

@@ -1,6 +1,7 @@
 import type { RuneClient } from "rune-games-sdk";
 
 export interface GameState {
+  desiredRotation: number | null;
   ship: ShipState;
 }
 
