@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import ImageButton from "./ImageButton.tsx";
-import { MOVE_LEFT, MOVE_RIGHT } from "../../utils/events.ts";
+import { MOVE_LEFT, MOVE_RIGHT, TAPPED } from "../../utils/events.ts";
 
 const BUTTON_SIZE = 50;
+const TAP_THRESHOLD = 200; // 200ms
 
 const Controls: React.FC = () => {
+  const pointerDownTime = useRef<number>(0);
+
   const onLeftPress = () => {
     document.dispatchEvent(new Event(MOVE_LEFT));
   };
@@ -12,6 +15,29 @@ const Controls: React.FC = () => {
   const onRightPress = () => {
     document.dispatchEvent(new Event(MOVE_RIGHT));
   };
+
+  const onPointerDown = () => {
+    pointerDownTime.current = Date.now();
+  };
+
+  const onPointerUp = () => {
+    const pointerUpTime = Date.now();
+    const duration = pointerUpTime - pointerDownTime.current;
+
+    if (duration < TAP_THRESHOLD) {
+      document.dispatchEvent(new Event(TAPPED));
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("pointerup", onPointerUp);
+
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("pointerup", onPointerUp);
+    };
+  }, []);
 
   return (
     <div

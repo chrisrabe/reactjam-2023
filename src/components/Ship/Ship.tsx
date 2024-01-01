@@ -8,11 +8,7 @@ interface ShipProps extends ShipGraphicsProps {
 
 const ROTATION_SPEED = 0.2;
 
-const Ship: React.FC<ShipProps> = ({
-  hasControls,
-  rotation,
-  ...graphicsProps
-}) => {
+const Ship: React.FC<ShipProps> = ({ hasControls, rotation, x, y, size }) => {
   const onRotateLeft = () => {
     Rune.actions.rotate(-ROTATION_SPEED);
   };
@@ -21,13 +17,18 @@ const Ship: React.FC<ShipProps> = ({
     Rune.actions.rotate(ROTATION_SPEED);
   };
 
+  const onTap = () => {
+    Rune.actions.shoot();
+  };
+
   usePlayerControls({
     onRotateRight,
     onRotateLeft,
+    onTap,
     disabled: !hasControls,
   });
 
-  return <ShipGraphics rotation={rotation} {...graphicsProps} />;
+  return <ShipGraphics rotation={rotation} x={x} y={y} size={size} />;
 };
 
 export default Ship;
