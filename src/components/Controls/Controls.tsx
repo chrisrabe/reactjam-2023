@@ -5,11 +5,11 @@ import { MOVE_LEFT, MOVE_RIGHT } from "../../utils/events.ts";
 const BUTTON_SIZE = 50;
 
 const Controls: React.FC = () => {
-  const onLeftClick = () => {
+  const onLeftPress = () => {
     document.dispatchEvent(new Event(MOVE_LEFT));
   };
 
-  const onRightClick = () => {
+  const onRightPress = () => {
     document.dispatchEvent(new Event(MOVE_RIGHT));
   };
 
@@ -26,13 +26,13 @@ const Controls: React.FC = () => {
     >
       <ImageButton
         image="assets/ui/left_button.svg"
-        onClick={onLeftClick}
+        onPress={onLeftPress}
         width={BUTTON_SIZE}
         height={BUTTON_SIZE}
       />
       <ImageButton
         image="assets/ui/right_button.svg"
-        onClick={onRightClick}
+        onPress={onRightPress}
         width={BUTTON_SIZE}
         height={BUTTON_SIZE}
       />

@@ -1,8 +1,8 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Graphics } from "@pixi/react";
 import { Graphics as PixiGraphics } from "pixi.js";
 
-interface ShipGraphicsProps {
+export interface ShipGraphicsProps {
   x: number;
   y: number;
   size: number;

@@ -1,1 +1,1 @@
-export { default } from "./ShipGraphics.tsx";
+export { default } from "./Ship.tsx";

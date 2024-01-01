@@ -4,8 +4,6 @@ import { Stage } from "@pixi/react";
 import ShipGraphics from "./components/Ship";
 import Controls from "./components/Controls";
 
-const SHIP_SIZE = 50;
-
 function App() {
   const [game, setGame] = useState<GameState>();
   const width = window.innerWidth;
@@ -33,10 +31,11 @@ function App() {
         }}
       >
         <ShipGraphics
-          x={width / 2}
-          y={height / 2 - SHIP_SIZE / 2}
-          size={SHIP_SIZE}
-          rotation={0}
+          x={game.ship.position.x}
+          y={game.ship.position.y}
+          size={game.ship.size}
+          rotation={game.ship.rotation}
+          hasControls
         />
       </Stage>
       <Controls />

@@ -1,7 +1,13 @@
 import type { RuneClient } from "rune-games-sdk";
 
 export interface GameState {
-  count: number;
+  ship: ShipState;
+}
+
+interface ShipState {
+  position: Vector2D;
+  rotation: number;
+  size: number;
 }
 
 export interface Vector2D {
@@ -10,7 +16,7 @@ export interface Vector2D {
 }
 
 type GameActions = {
-  increment: (params: { amount: number }) => void;
+  rotate: (rotationSpeed: number) => void;
 };
 
 declare global {
