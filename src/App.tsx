@@ -1,17 +1,11 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
+import reactLogo from "./assets/rune.svg"
+import viteLogo from "/vite.svg"
+import "./App.css"
 import { GameState } from "./logic.ts"
-import {Container,Stage} from "@pixi/react";
-import {APPLICATION_OPTIONS} from "./config/pixi-config.ts";
-import World from "./components/common/World";
-import Shape from "./components/common/Shape";
-import Controls from "./components/game/Controls";
-import Kayak from "./components/game/Kayak";
 
 function App() {
   const [game, setGame] = useState<GameState>()
-  const width = window.innerWidth
-  const height = window.innerHeight
-
   useEffect(() => {
     Rune.initClient({
       onChange: ({ game }) => {
@@ -26,40 +20,27 @@ function App() {
 
   return (
     <>
-      <Stage width={width} height={height} options={APPLICATION_OPTIONS}>
-        <World>
-          <Container name="bounds">
-            <Shape
-              key="bottom"
-              type="rectangle"
-              config={{ x: width / 2, y: height + 50, width, height: 100 }}
-              options={{ isStatic: true }}
-            />
-            <Shape
-              key="top"
-              type="rectangle"
-              config={{ x: width / 2, y: -50, width, height: 100 }}
-              options={{ isStatic: true }}
-            />
-            <Shape
-              key="left"
-              type="rectangle"
-              config={{ x: -50, y: height/2, width: 100, height }}
-              options={{ isStatic: true }}
-            />
-            <Shape
-              key="right"
-              type="rectangle"
-              config={{ x: width + 50, y: height/2, width: 100, height }}
-              options={{ isStatic: true }}
-            />
-          </Container>
-          <Container name="players">
-            <Kayak x={window.innerWidth / 2} y={window.innerHeight / 2} width={25} height={50} />
-          </Container>
-        </World>
-      </Stage>
-      <Controls />
+      <div>
+        <a href="https://vitejs.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://developers.rune.ai" target="_blank">
+          <img src={reactLogo} className="logo rune" alt="Rune logo" />
+        </a>
+      </div>
+      <h1>Vite + Rune</h1>
+      <div className="card">
+        <button onClick={() => Rune.actions.increment({ amount: 1 })}>
+          count is {game.count}
+        </button>
+        <p>
+          Edit <code>src/App.tsx</code> or <code>src/logic.ts</code> and save to
+          test HMR
+        </p>
+      </div>
+      <p className="read-the-docs">
+        Click on the Vite and Rune logos to learn more
+      </p>
     </>
   )
 }

@@ -1,5 +1,5 @@
 {
-  "name": "reactjam-2023",
+  "name": "phantom-radar",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,16 +11,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@pixi/react": "^7.1.1",
-    "keycode-js": "^3.1.0",
-    "matter-js": "^0.19.0",
-    "pixi.js": "^7.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "rune-games-sdk": "^4.16.0"
   },
   "devDependencies": {
-    "@types/matter-js": "^0.19.5",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
