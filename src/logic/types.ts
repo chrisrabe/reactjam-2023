@@ -2,6 +2,7 @@ import type { RuneClient } from "rune-games-sdk";
 
 export interface GameState {
   desiredRotation: number | null;
+  newBullets: Bullet[];
   ship: ShipState;
   bullets: Record<string, Bullet>;
 }
@@ -24,6 +25,7 @@ export interface Vector2D {
 
 export type GameActions = {
   rotate: (rotationSpeed: number) => void;
+  shoot: () => void;
 };
 
 declare global {

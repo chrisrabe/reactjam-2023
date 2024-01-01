@@ -19,7 +19,7 @@ const Bullets: React.FC<BulletsProps> = ({ bullets }) => {
   >({});
 
   const onGameStateChange = ({ game, futureGame }: ChangeParams) => {
-    for (const bulletId in game.bullets) {
+    for (const bulletId of Object.keys(game.bullets)) {
       if (!bulletInterpolators.current[bulletId]) {
         bulletInterpolators.current[bulletId] =
           Rune.interpolator<[number, number]>();
@@ -55,7 +55,12 @@ const Bullets: React.FC<BulletsProps> = ({ bullets }) => {
         const position = interpolator.getPosition();
 
         return (
-          <BulletGraphics x={position[0]} y={position[0]} size={BULLET_SIZE} />
+          <BulletGraphics
+            key={bulletId}
+            x={position[0]}
+            y={position[1]}
+            size={BULLET_SIZE}
+          />
         );
       })}
     </Container>

@@ -11,8 +11,11 @@ interface BulletGraphicsProps {
 const BulletGraphics: React.FC<BulletGraphicsProps> = ({ x, y, size }) => {
   const draw = (g: PixiGraphics) => {
     g.clear();
+
+    g.position.set(x, y);
+
     g.beginFill("white");
-    g.drawCircle(x, y, size / 2);
+    g.drawCircle(0, 0, size / 2);
     g.endFill();
   };
 
