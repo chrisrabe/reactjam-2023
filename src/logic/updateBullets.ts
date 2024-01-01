@@ -13,7 +13,7 @@ const getUpdatedPosition = (bullet: Bullet): [number, number] => {
 const updateBullets = (game: GameState) => {
   if (game.newBullets.length > 0) {
     game.newBullets.forEach((bullet) => {
-      game.bullets[Object.keys(game.bullets).length] = bullet;
+      game.bullets[bullet.id] = bullet;
     });
     game.newBullets = [];
   }

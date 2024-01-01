@@ -19,10 +19,20 @@ const Bullets: React.FC<BulletsProps> = ({ bullets }) => {
   >({});
 
   const onGameStateChange = ({ game, futureGame }: ChangeParams) => {
+    const idsToRemove = Object.keys(bulletInterpolators.current).reduce<
+      Record<string, string>
+    >((a, k) => {
+      a[k] = k;
+      return a;
+    }, {});
+
+    // Add and update interpolators
     for (const bulletId of Object.keys(game.bullets)) {
       if (!bulletInterpolators.current[bulletId]) {
         bulletInterpolators.current[bulletId] =
           Rune.interpolator<[number, number]>();
+      } else {
+        delete idsToRemove[bulletId];
       }
 
       const interpolator = bulletInterpolators.current[bulletId];
@@ -32,6 +42,11 @@ const Bullets: React.FC<BulletsProps> = ({ bullets }) => {
           ? futureGame?.bullets[bulletId].position
           : game.bullets[bulletId].position,
       });
+    }
+
+    // Remove interpolators
+    for (const bulletId of Object.keys(idsToRemove)) {
+      delete bulletInterpolators.current[bulletId];
     }
   };
 
