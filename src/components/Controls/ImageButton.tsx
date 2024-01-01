@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { PointerEvent, useEffect, useRef } from "react";
 
 interface ImageButtonProps {
   onPress: () => void;
@@ -15,18 +15,24 @@ const ImageButton: React.FC<ImageButtonProps> = ({
 }) => {
   const intervalRef = useRef<NodeJS.Timeout>();
 
-  const onPointerDown = () => {
+  const stopInterval = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = undefined;
+    }
+  };
+
+  const onPointerDown = (event: PointerEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     if (intervalRef.current) return;
     intervalRef.current = setInterval(() => {
       onPress();
     }, 1000 / 10); // Rune limits to 10 actions per sec
   };
 
-  const stopInterval = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = undefined;
-    }
+  const onPointerUp = (event: PointerEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    stopInterval();
   };
 
   useEffect(() => {
@@ -36,7 +42,7 @@ const ImageButton: React.FC<ImageButtonProps> = ({
   return (
     <button
       onPointerDown={onPointerDown}
-      onPointerUp={stopInterval}
+      onPointerUp={onPointerUp}
       style={{ border: "none", background: "none", width, height }}
     >
       <img
