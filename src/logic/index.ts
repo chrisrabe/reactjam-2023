@@ -1,6 +1,7 @@
 import { Bullet, GameState } from "./types.ts";
 import updateBullets from "./updateBullets.ts";
 import updateRotation from "./updateRotation.ts";
+import purgeOutOfBounds from "./purgeOutOfBounds.ts";
 
 const SHIP_SIZE = 50;
 
@@ -26,8 +27,9 @@ Rune.initLogic({
     rotate: (rotationSpeed, { game }) => {
       game.desiredRotation = game.ship.rotation + rotationSpeed;
     },
-    shoot: (_, { game }) => {
+    shoot: (id, { game }) => {
       const bullet: Bullet = {
+        id,
         position: [game.ship.position.x, game.ship.position.y],
         rotation: game.ship.rotation,
       };
@@ -37,6 +39,7 @@ Rune.initLogic({
   update: ({ game }) => {
     updateRotation(game);
     updateBullets(game);
+    purgeOutOfBounds(game);
   },
   updatesPerSecond: 30,
 });

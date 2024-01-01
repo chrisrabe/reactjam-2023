@@ -14,6 +14,7 @@ interface ShipState {
 }
 
 export interface Bullet {
+  id: string;
   position: [number, number];
   rotation: number;
 }
@@ -25,7 +26,7 @@ export interface Vector2D {
 
 export type GameActions = {
   rotate: (rotationSpeed: number) => void;
-  shoot: () => void;
+  shoot: (id: string) => void;
 };
 
 declare global {
