@@ -4,6 +4,11 @@ export interface GameState {
   count: number;
 }
 
+export interface Vector2D {
+  x: number;
+  y: number;
+}
+
 type GameActions = {
   increment: (params: { amount: number }) => void;
 };
