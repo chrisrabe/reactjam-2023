@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GameState } from "./logic/types.ts";
 import { Stage } from "@pixi/react";
 import ShipGraphics from "./components/Ship";
 import Controls from "./components/Controls";
 
-const rotationInterpolator = Rune.interpolator<number>();
-
 function App() {
   const [game, setGame] = useState<GameState>();
+  const rotationInterpolator = useRef(Rune.interpolator<number>());
   const width = window.innerWidth;
   const height = window.innerHeight;
 
@@ -18,7 +17,7 @@ function App() {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const futureGame = params.futureGame!;
 
-        rotationInterpolator.update({
+        rotationInterpolator.current.update({
           game: game.ship.rotation,
           futureGame: futureGame.ship.rotation,
         });
@@ -45,7 +44,7 @@ function App() {
           x={game.ship.position.x}
           y={game.ship.position.y}
           size={game.ship.size}
-          rotation={rotationInterpolator.getPosition()}
+          rotation={rotationInterpolator.current.getPosition()}
           hasControls
         />
       </Stage>
