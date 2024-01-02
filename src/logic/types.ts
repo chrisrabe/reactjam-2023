@@ -6,14 +6,13 @@ export interface GameState {
   newBullets: Bullet[];
   ship: ShipState;
   bullets: Record<string, Bullet>;
-  enemiesToSpawn: Enemy[];
   enemies: Enemy[];
 }
 
 export type GameActions = {
   rotate: (rotationSpeed: number) => void;
   shoot: (id: string) => void;
-  spawnEnemy: (position: Vector2D) => void;
+  spawnEnemy: (params: { position: Vector2D; id: string }) => void;
 };
 
 interface ShipState {
@@ -29,6 +28,7 @@ export interface Bullet {
 }
 
 export interface Enemy {
+  id: string;
   position: Vector2D;
 }
 

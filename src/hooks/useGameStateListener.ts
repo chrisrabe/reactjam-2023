@@ -5,6 +5,7 @@ import { GameState } from "../logic/types.ts";
 export interface ChangeParams {
   game: GameState;
   futureGame?: GameState;
+  yourPlayerId?: string;
 }
 
 interface GameStateListener {
