@@ -1,7 +1,13 @@
 import type { RuneClient } from "rune-games-sdk";
 
+export enum GameStage {
+  Playing = "playing",
+  GameOver = "gameover",
+}
+
 export interface GameState {
   host: string;
+  stage: GameStage;
   desiredRotation: number | null;
   newBullets: Bullet[];
   ship: ShipState;
