@@ -35,16 +35,22 @@ const useEnemySpawner = ({
 
     switch (edge) {
       case 1: // Right edge
-        position = { x: screenWidth, y: Math.random() * screenHeight };
+        position = {
+          x: screenWidth,
+          y: Math.floor(Math.random() * screenHeight),
+        };
         break;
       case 2: // Bottom edge
-        position = { x: Math.random() * screenWidth, y: screenHeight };
+        position = {
+          x: Math.floor(Math.random() * screenWidth),
+          y: screenHeight,
+        };
         break;
       case 3: // Left edge
-        position = { x: 0, y: Math.random() * screenHeight };
+        position = { x: 0, y: Math.floor(Math.random() * screenHeight) };
         break;
       default: // Top edge
-        position = { x: Math.random() * screenWidth, y: 0 };
+        position = { x: Math.floor(Math.random() * screenWidth), y: 0 };
     }
 
     const enemy = {

@@ -21,7 +21,20 @@ const removeBullets = (game: GameState) => {
   }
 };
 
+const removeEnemies = (game: GameState) => {
+  const idsToRemove: string[] = [];
+  for (const enemy of Object.values(game.enemies)) {
+    if (isOutOfBounds({ x: enemy.position[0], y: enemy.position[1] })) {
+      idsToRemove.push(enemy.id);
+    }
+  }
+  for (const id of idsToRemove) {
+    delete game.enemies[id];
+  }
+};
+
 const purgeOutOfBounds = (game: GameState) => {
   removeBullets(game);
+  removeEnemies(game);
 };
 export default purgeOutOfBounds;

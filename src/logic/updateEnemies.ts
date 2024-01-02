@@ -19,9 +19,9 @@ const updateEnemies = (game: GameState, enemySpeed: number) => {
 };
 
 const getDirection = (from: Vector2D, to: Vector2D): Vector2D => {
-  const dx = to.x - from.y;
+  const dx = to.x - from.x;
   const dy = to.y - from.y;
-  const distance = Math.sqrt(dx * dx + dy * dy);
+  const distance = Math.sqrt(dx * dx + dy * dy) || 1;
 
   return {
     x: dx / distance,

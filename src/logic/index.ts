@@ -1,4 +1,4 @@
-import { Bullet, Enemy, GameState } from "./types.ts";
+import { Bullet, GameState } from "./types.ts";
 import updateBullets from "./updateBullets.ts";
 import updateRotation from "./updateRotation.ts";
 import purgeOutOfBounds from "./purgeOutOfBounds.ts";
