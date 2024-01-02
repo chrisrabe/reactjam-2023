@@ -2,13 +2,10 @@ import { Bullet, GameStage, GameState } from "./types.ts";
 import updateBullets from "./updateBullets.ts";
 import updateRotation from "./updateRotation.ts";
 import purgeOutOfBounds from "./purgeOutOfBounds.ts";
-import updateEnemies from "./updateEnemies.ts";
+import moveEnemies from "./moveEnemies.ts";
 import checkGameOver from "./checkGameOver.ts";
-
-const SHIP_SIZE = 25;
-const ENEMY_SIZE = 35;
-const BULLET_SIZE = 5;
-const ENEMY_SPEED = 2;
+import { SHIP_SIZE, BULLET_SIZE, ENEMY_SIZE } from "./constants.ts";
+import updateScore from "./updateScore.ts";
 
 Rune.initLogic({
   minPlayers: 2,
@@ -16,6 +13,7 @@ Rune.initLogic({
   setup: (allPlayerIds): GameState => {
     return {
       host: allPlayerIds[0],
+      score: 0,
       desiredRotation: null,
       stage: GameStage.Playing,
       newBullets: [],
@@ -64,7 +62,8 @@ Rune.initLogic({
   update: ({ game }) => {
     updateRotation(game);
     updateBullets(game);
-    updateEnemies(game, ENEMY_SPEED);
+    moveEnemies(game);
+    updateScore(game);
     purgeOutOfBounds(game);
     checkGameOver(game);
   },

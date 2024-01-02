@@ -6,6 +6,7 @@ export enum GameStage {
 }
 
 export interface GameState {
+  score: number;
   host: string;
   stage: GameStage;
   desiredRotation: number | null;

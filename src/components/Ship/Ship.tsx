@@ -7,7 +7,7 @@ interface ShipProps extends ShipGraphicsProps {
   hasControls?: boolean;
 }
 
-const ROTATION_SPEED = 0.4;
+const ROTATION_SPEED = 0.2;
 
 const Ship: React.FC<ShipProps> = ({ hasControls, rotation, x, y, size }) => {
   const onRotateLeft = () => {

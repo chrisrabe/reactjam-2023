@@ -1,6 +1,8 @@
 import { GameState, Vector2D } from "./types.ts";
+import { ENEMY_SPEED } from "./constants.ts";
 
-const updateEnemies = (game: GameState, enemySpeed: number) => {
+const moveEnemies = (game: GameState) => {
+  const enemySpeed = ENEMY_SPEED;
   const shipPosition = game.ship.position;
 
   for (const enemy of Object.values(game.enemies)) {
@@ -29,4 +31,4 @@ const getDirection = (from: Vector2D, to: Vector2D): Vector2D => {
   };
 };
 
-export default updateEnemies;
+export default moveEnemies;

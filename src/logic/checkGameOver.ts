@@ -1,4 +1,4 @@
-import { GameState } from "./types.ts";
+import { GameStage, GameState } from "./types.ts";
 
 const checkGameOver = (game: GameState) => {
   const shipPosition = game.ship.position;
@@ -11,6 +11,7 @@ const checkGameOver = (game: GameState) => {
     const distance = Math.sqrt(dx * dx + dy * dy);
 
     if (distance < collisionThreshold + enemy.size / 2) {
+      game.stage = GameStage.GameOver;
       Rune.gameOver();
       break;
     }
