@@ -9,8 +9,9 @@ const SHIP_SIZE = 50;
 Rune.initLogic({
   minPlayers: 2,
   maxPlayers: 4,
-  setup: (): GameState => {
+  setup: (allPlayerIds): GameState => {
     return {
+      host: allPlayerIds[0],
       desiredRotation: null,
       newBullets: [],
       ship: {
@@ -43,6 +44,15 @@ Rune.initLogic({
         position,
       };
       game.enemiesToSpawn.push(enemy);
+    },
+  },
+  events: {
+    playerLeft: (playerId, { game, allPlayerIds }) => {
+      if (playerId === game.host) {
+        const nextHost = allPlayerIds.find((id) => id !== game.host);
+        if (!nextHost) throw Rune.invalidAction();
+        game.host = nextHost;
+      }
     },
   },
   update: ({ game }) => {

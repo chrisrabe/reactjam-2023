@@ -1,6 +1,7 @@
 import type { RuneClient } from "rune-games-sdk";
 
 export interface GameState {
+  host: string;
   desiredRotation: number | null;
   newBullets: Bullet[];
   ship: ShipState;
