@@ -9,6 +9,7 @@ import useGameStateListener, {
   ChangeParams,
 } from "./hooks/useGameStateListener.ts";
 import Enemies from "./components/Enemies";
+import HUD from "./components/HUD";
 
 function App() {
   const width = window.innerWidth;
@@ -61,6 +62,7 @@ function App() {
         <Enemies enemies={game.enemies} isHost={isHost} />
       </Stage>
       <Controls />
+      <HUD score={game.score} />
     </>
   );
 }
