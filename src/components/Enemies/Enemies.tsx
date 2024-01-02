@@ -5,7 +5,7 @@ import { Container } from "@pixi/react";
 import EnemyGraphics from "./EnemyGraphics.tsx";
 
 interface EnemiesProps {
-  enemies: Enemy[];
+  enemies: Record<string, Enemy>;
   isHost: boolean;
 }
 
