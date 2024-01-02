@@ -6,7 +6,7 @@ export interface GameState {
   newBullets: Bullet[];
   ship: ShipState;
   bullets: Record<string, Bullet>;
-  enemies: Enemy[];
+  enemies: Record<string, Enemy>;
 }
 
 export type GameActions = {

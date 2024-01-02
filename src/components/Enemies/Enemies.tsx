@@ -18,7 +18,7 @@ const Enemies: React.FC<EnemiesProps> = ({ enemies, isHost }) => {
 
   return (
     <Container name="enemies">
-      {enemies.map((enemy) => (
+      {Object.values(enemies).map((enemy) => (
         <EnemyGraphics
           key={enemy.id}
           x={enemy.position[0]}

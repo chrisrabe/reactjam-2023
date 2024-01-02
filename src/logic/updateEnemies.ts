@@ -3,7 +3,7 @@ import { GameState, Vector2D } from "./types.ts";
 const updateEnemies = (game: GameState, enemySpeed: number) => {
   const shipPosition = game.ship.position;
 
-  for (const enemy of game.enemies) {
+  for (const enemy of Object.values(game.enemies)) {
     const enemyPosition: Vector2D = {
       x: enemy.position[0],
       y: enemy.position[1],

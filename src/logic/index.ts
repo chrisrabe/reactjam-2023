@@ -26,7 +26,7 @@ Rune.initLogic({
         size: SHIP_SIZE,
       },
       bullets: {},
-      enemies: [],
+      enemies: {},
     };
   },
   actions: {
@@ -43,12 +43,11 @@ Rune.initLogic({
       game.newBullets.push(bullet);
     },
     spawnEnemy: ({ position, id }, { game }) => {
-      const enemy: Enemy = {
+      game.enemies[id] = {
         id,
         position: [position.x, position.y],
         size: ENEMY_SIZE,
       };
-      game.enemies.push(enemy);
     },
   },
   events: {
