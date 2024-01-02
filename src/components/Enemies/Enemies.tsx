@@ -9,8 +9,6 @@ interface EnemiesProps {
   isHost: boolean;
 }
 
-const ENEMY_SIZE = 50;
-
 const Enemies: React.FC<EnemiesProps> = ({ enemies, isHost }) => {
   useEnemySpawner({
     screenWidth: window.innerWidth,
@@ -25,7 +23,7 @@ const Enemies: React.FC<EnemiesProps> = ({ enemies, isHost }) => {
           key={enemy.id}
           x={enemy.position.x}
           y={enemy.position.y}
-          size={ENEMY_SIZE}
+          size={enemy.size}
         />
       ))}
     </Container>

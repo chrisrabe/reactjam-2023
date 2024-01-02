@@ -25,11 +25,13 @@ export interface Bullet {
   id: string;
   position: [number, number];
   rotation: number;
+  size: number;
 }
 
 export interface Enemy {
   id: string;
   position: Vector2D;
+  size: number;
 }
 
 export interface Vector2D {

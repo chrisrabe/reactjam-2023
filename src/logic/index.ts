@@ -3,7 +3,9 @@ import updateBullets from "./updateBullets.ts";
 import updateRotation from "./updateRotation.ts";
 import purgeOutOfBounds from "./purgeOutOfBounds.ts";
 
-const SHIP_SIZE = 50;
+const SHIP_SIZE = 25;
+const ENEMY_SIZE = 35;
+const BULLET_SIZE = 5;
 
 Rune.initLogic({
   minPlayers: 2,
@@ -34,6 +36,7 @@ Rune.initLogic({
         id,
         position: [game.ship.position.x, game.ship.position.y],
         rotation: game.ship.rotation,
+        size: BULLET_SIZE,
       };
       game.newBullets.push(bullet);
     },
@@ -41,6 +44,7 @@ Rune.initLogic({
       const enemy: Enemy = {
         id,
         position,
+        size: ENEMY_SIZE,
       };
       game.enemies.push(enemy);
     },

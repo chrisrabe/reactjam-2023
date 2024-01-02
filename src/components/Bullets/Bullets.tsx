@@ -74,7 +74,7 @@ const Bullets: React.FC<BulletsProps> = ({ bullets }) => {
             key={bulletId}
             x={position[0]}
             y={position[1]}
-            size={BULLET_SIZE}
+            size={bulletData.size}
           />
         );
       })}
