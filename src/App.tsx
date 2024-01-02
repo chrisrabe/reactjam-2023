@@ -24,7 +24,6 @@ function App() {
     futureGame,
     yourPlayerId,
   }: ChangeParams) => {
-    console.log(game);
     rotationInterpolator.current.update({
       game: game.ship.rotation,
       futureGame: futureGame?.desiredRotation

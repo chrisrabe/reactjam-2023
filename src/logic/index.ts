@@ -7,7 +7,7 @@ import updateEnemies from "./updateEnemies.ts";
 const SHIP_SIZE = 25;
 const ENEMY_SIZE = 35;
 const BULLET_SIZE = 5;
-const ENEMY_SPEED = 5;
+const ENEMY_SPEED = 2;
 
 Rune.initLogic({
   minPlayers: 2,
