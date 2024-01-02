@@ -5,7 +5,15 @@ export interface GameState {
   newBullets: Bullet[];
   ship: ShipState;
   bullets: Record<string, Bullet>;
+  enemiesToSpawn: Enemy[];
+  enemies: Enemy[];
 }
+
+export type GameActions = {
+  rotate: (rotationSpeed: number) => void;
+  shoot: (id: string) => void;
+  spawnEnemy: (position: Vector2D) => void;
+};
 
 interface ShipState {
   position: Vector2D;
@@ -19,15 +27,14 @@ export interface Bullet {
   rotation: number;
 }
 
+export interface Enemy {
+  position: Vector2D;
+}
+
 export interface Vector2D {
   x: number;
   y: number;
 }
-
-export type GameActions = {
-  rotate: (rotationSpeed: number) => void;
-  shoot: (id: string) => void;
-};
 
 declare global {
   const Rune: RuneClient<GameState, GameActions>;

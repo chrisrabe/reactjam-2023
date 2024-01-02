@@ -1,7 +1,8 @@
-import { Bullet, GameState } from "./types.ts";
+import { Bullet, Enemy, GameState, Vector2D } from "./types.ts";
 import updateBullets from "./updateBullets.ts";
 import updateRotation from "./updateRotation.ts";
 import purgeOutOfBounds from "./purgeOutOfBounds.ts";
+import spawnEnemies from "./spawnEnemies.ts";
 
 const SHIP_SIZE = 50;
 
@@ -21,6 +22,8 @@ Rune.initLogic({
         size: SHIP_SIZE,
       },
       bullets: {},
+      enemies: [],
+      enemiesToSpawn: [],
     };
   },
   actions: {
@@ -35,11 +38,18 @@ Rune.initLogic({
       };
       game.newBullets.push(bullet);
     },
+    spawnEnemy: (position: Vector2D, { game }) => {
+      const enemy: Enemy = {
+        position,
+      };
+      game.enemiesToSpawn.push(enemy);
+    },
   },
   update: ({ game }) => {
     updateRotation(game);
     updateBullets(game);
     purgeOutOfBounds(game);
+    spawnEnemies(game);
   },
   updatesPerSecond: 30,
 });

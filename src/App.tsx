@@ -18,6 +18,8 @@ function App() {
   useRuneClient();
 
   const onGameStateChange = ({ game, futureGame }: ChangeParams) => {
+    console.log(game);
+
     rotationInterpolator.current.update({
       game: game.ship.rotation,
       futureGame: futureGame?.desiredRotation
