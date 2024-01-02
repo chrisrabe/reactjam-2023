@@ -1,6 +1,5 @@
 import React from "react";
-import { Graphics } from "@pixi/react";
-import { Graphics as PixiGraphics } from "pixi.js";
+import CircleGraphics from "../CircleGraphics";
 
 interface BulletGraphicsProps {
   x: number;
@@ -9,17 +8,7 @@ interface BulletGraphicsProps {
 }
 
 const BulletGraphics: React.FC<BulletGraphicsProps> = ({ x, y, size }) => {
-  const draw = (g: PixiGraphics) => {
-    g.clear();
-
-    g.position.set(x, y);
-
-    g.beginFill("white");
-    g.drawCircle(0, 0, size / 2);
-    g.endFill();
-  };
-
-  return <Graphics draw={draw} anchor={0.5} />;
+  return <CircleGraphics x={x} y={y} color="white" size={size} />;
 };
 
 export default BulletGraphics;

@@ -1,16 +1,21 @@
-import { Bullet, GameState } from "./types.ts";
+import { Bullet, GameStage, GameState } from "./types.ts";
 import updateBullets from "./updateBullets.ts";
 import updateRotation from "./updateRotation.ts";
 import purgeOutOfBounds from "./purgeOutOfBounds.ts";
-
-const SHIP_SIZE = 50;
+import moveEnemies from "./moveEnemies.ts";
+import checkGameOver from "./checkGameOver.ts";
+import { SHIP_SIZE, BULLET_SIZE, ENEMY_SIZE } from "./constants.ts";
+import updateScore from "./updateScore.ts";
 
 Rune.initLogic({
   minPlayers: 2,
   maxPlayers: 4,
-  setup: (): GameState => {
+  setup: (allPlayerIds): GameState => {
     return {
+      host: allPlayerIds[0],
+      score: 0,
       desiredRotation: null,
+      stage: GameStage.Playing,
       newBullets: [],
       ship: {
         position: {
@@ -21,6 +26,7 @@ Rune.initLogic({
         size: SHIP_SIZE,
       },
       bullets: {},
+      enemies: {},
     };
   },
   actions: {
@@ -32,14 +38,34 @@ Rune.initLogic({
         id,
         position: [game.ship.position.x, game.ship.position.y],
         rotation: game.ship.rotation,
+        size: BULLET_SIZE,
       };
       game.newBullets.push(bullet);
+    },
+    spawnEnemy: ({ position, id }, { game }) => {
+      game.enemies[id] = {
+        id,
+        position: [position.x, position.y],
+        size: ENEMY_SIZE,
+      };
+    },
+  },
+  events: {
+    playerLeft: (playerId, { game, allPlayerIds }) => {
+      if (playerId === game.host) {
+        const nextHost = allPlayerIds.find((id) => id !== game.host);
+        if (!nextHost) throw Rune.invalidAction();
+        game.host = nextHost;
+      }
     },
   },
   update: ({ game }) => {
     updateRotation(game);
     updateBullets(game);
+    moveEnemies(game);
+    updateScore(game);
     purgeOutOfBounds(game);
+    checkGameOver(game);
   },
   updatesPerSecond: 30,
 });

@@ -11,8 +11,6 @@ interface BulletsProps {
   bullets: Record<string, Bullet>;
 }
 
-const BULLET_SIZE = 15;
-
 const Bullets: React.FC<BulletsProps> = ({ bullets }) => {
   const bulletInterpolators = useRef<
     Record<string, Interpolator<[number, number]>>
@@ -74,7 +72,7 @@ const Bullets: React.FC<BulletsProps> = ({ bullets }) => {
             key={bulletId}
             x={position[0]}
             y={position[1]}
-            size={BULLET_SIZE}
+            size={bulletData.size}
           />
         );
       })}

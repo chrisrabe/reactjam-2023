@@ -22,7 +22,7 @@ const ShipGraphics: React.FC<ShipGraphicsProps> = ({
     g.rotation = rotation;
 
     const halfSize = size / 2;
-    const tipSize = size / 5; // size of front tip
+    const tipSize = size / 5;
 
     // Ship body
     g.beginFill("4ADE80");
