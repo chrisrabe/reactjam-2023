@@ -21,8 +21,8 @@ const Enemies: React.FC<EnemiesProps> = ({ enemies, isHost }) => {
       {enemies.map((enemy) => (
         <EnemyGraphics
           key={enemy.id}
-          x={enemy.position.x}
-          y={enemy.position.y}
+          x={enemy.position[0]}
+          y={enemy.position[1]}
           size={enemy.size}
         />
       ))}

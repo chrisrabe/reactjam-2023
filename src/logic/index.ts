@@ -2,10 +2,12 @@ import { Bullet, Enemy, GameState } from "./types.ts";
 import updateBullets from "./updateBullets.ts";
 import updateRotation from "./updateRotation.ts";
 import purgeOutOfBounds from "./purgeOutOfBounds.ts";
+import updateEnemies from "./updateEnemies.ts";
 
 const SHIP_SIZE = 25;
 const ENEMY_SIZE = 35;
 const BULLET_SIZE = 5;
+const ENEMY_SPEED = 5;
 
 Rune.initLogic({
   minPlayers: 2,
@@ -43,7 +45,7 @@ Rune.initLogic({
     spawnEnemy: ({ position, id }, { game }) => {
       const enemy: Enemy = {
         id,
-        position,
+        position: [position.x, position.y],
         size: ENEMY_SIZE,
       };
       game.enemies.push(enemy);
@@ -61,6 +63,7 @@ Rune.initLogic({
   update: ({ game }) => {
     updateRotation(game);
     updateBullets(game);
+    updateEnemies(game, ENEMY_SPEED);
     purgeOutOfBounds(game);
   },
   updatesPerSecond: 30,

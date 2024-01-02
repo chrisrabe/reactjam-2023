@@ -30,7 +30,7 @@ export interface Bullet {
 
 export interface Enemy {
   id: string;
-  position: Vector2D;
+  position: [number, number];
   size: number;
 }
 
