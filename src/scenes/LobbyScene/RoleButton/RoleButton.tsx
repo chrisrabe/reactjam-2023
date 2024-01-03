@@ -4,6 +4,7 @@ import { PlayerRole } from "../../../logic/types.ts";
 interface RoleButtonProps {
   role: PlayerRole;
   isSelected: boolean;
+  playerNames: string[];
 }
 
 const roleColors: Record<PlayerRole, string> = {
@@ -11,7 +12,11 @@ const roleColors: Record<PlayerRole, string> = {
   pilot: "#A3E635",
 };
 
-const RoleButton: React.FC<RoleButtonProps> = ({ role, isSelected }) => {
+const RoleButton: React.FC<RoleButtonProps> = ({
+  role,
+  isSelected,
+  playerNames,
+}) => {
   const roleColor = roleColors[role];
   const btnColor = isSelected
     ? {
@@ -21,7 +26,7 @@ const RoleButton: React.FC<RoleButtonProps> = ({ role, isSelected }) => {
     : {};
 
   return (
-    <div
+    <button
       style={{
         height: "5rem",
         display: "flex",
@@ -30,6 +35,9 @@ const RoleButton: React.FC<RoleButtonProps> = ({ role, isSelected }) => {
         alignItems: "center",
         width: "100%",
         position: "relative",
+        border: "none",
+        background: "none",
+        textAlign: "start",
       }}
     >
       <img
@@ -60,9 +68,15 @@ const RoleButton: React.FC<RoleButtonProps> = ({ role, isSelected }) => {
         }}
       >
         <h2 style={{ margin: 0, textTransform: "capitalize" }}>{role}</h2>
-        <span>You</span>
+        <span
+          style={{
+            fontStyle: playerNames.length === 0 ? "italic" : "inherit",
+          }}
+        >
+          {playerNames.length > 0 ? playerNames.join(", ") : "None"}
+        </span>
       </div>
-    </div>
+    </button>
   );
 };
 

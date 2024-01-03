@@ -1,13 +1,33 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import { GameState, PlayerRole } from "../../logic/types.ts";
 import RoleButton from "./RoleButton";
+import { Players } from "rune-games-sdk";
 
 interface LobbySceneProps {
   game: GameState;
   playerId?: string;
+  players: Players;
 }
 
-const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId }) => {
+const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
+  const { pilotNames, overwatchNames } = useMemo(() => {
+    const pilotNames: string[] = [];
+    const overwatchNames: string[] = [];
+
+    for (const player of Object.values(game.players)) {
+      const bucket =
+        player.role === PlayerRole.Pilot ? pilotNames : overwatchNames;
+      const name =
+        player.id === playerId ? "You" : players[player.id].displayName;
+      bucket.push(name);
+    }
+
+    return {
+      pilotNames,
+      overwatchNames,
+    };
+  }, [game.players, playerId, players]);
+
   return (
     <div
       style={{
@@ -36,10 +56,12 @@ const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId }) => {
           <RoleButton
             role={PlayerRole.Pilot}
             isSelected={game.players[playerId].role === PlayerRole.Pilot}
+            playerNames={pilotNames}
           />
           <RoleButton
             role={PlayerRole.Overwatch}
             isSelected={game.players[playerId].role === PlayerRole.Overwatch}
+            playerNames={overwatchNames}
           />
         </div>
       )}
