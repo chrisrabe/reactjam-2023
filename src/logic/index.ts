@@ -4,7 +4,7 @@ import updateRotation from "./updateRotation.ts";
 import purgeOutOfBounds from "./purgeOutOfBounds.ts";
 import moveEnemies from "./moveEnemies.ts";
 import checkGameOver from "./checkGameOver.ts";
-import { SHIP_SIZE, BULLET_SIZE, ENEMY_SIZE } from "./constants.ts";
+import { BULLET_SIZE, ENEMY_SIZE, SHIP_SIZE } from "./constants.ts";
 import updateScore from "./updateScore.ts";
 
 Rune.initLogic({

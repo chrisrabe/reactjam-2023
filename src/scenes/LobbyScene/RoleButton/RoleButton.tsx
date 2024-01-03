@@ -6,8 +6,13 @@ interface RoleButtonProps {
   isSelected: boolean;
 }
 
+const roleColors: Record<PlayerRole, string> = {
+  overwatch: "#C084FC",
+  pilot: "#A3E635",
+};
+
 const RoleButton: React.FC<RoleButtonProps> = ({ role, isSelected }) => {
-  const roleColor = role === PlayerRole.Pilot ? "#A3E635" : "#C084FC";
+  const roleColor = roleColors[role];
   const btnColor = isSelected
     ? {
         boxShadow: `0 0 15px 3px ${roleColor}`,
