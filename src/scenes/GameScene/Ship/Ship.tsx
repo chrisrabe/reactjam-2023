@@ -12,17 +12,14 @@ const ROTATION_SPEED = 0.2;
 
 const Ship: React.FC<ShipProps> = ({ role, rotation, x, y, size }) => {
   const onRotateLeft = () => {
-    if (role === PlayerRole.Overwatch) return;
     Rune.actions.rotate(-ROTATION_SPEED);
   };
 
   const onRotateRight = () => {
-    if (role === PlayerRole.Overwatch) return;
     Rune.actions.rotate(ROTATION_SPEED);
   };
 
   const onTap = () => {
-    if (role === PlayerRole.Overwatch) return;
     Rune.actions.shoot(nanoid());
   };
 
@@ -30,6 +27,7 @@ const Ship: React.FC<ShipProps> = ({ role, rotation, x, y, size }) => {
     onRotateRight,
     onRotateLeft,
     onTap,
+    disabled: role !== PlayerRole.Pilot,
   });
 
   return <ShipGraphics rotation={rotation} x={x} y={y} size={size} />;

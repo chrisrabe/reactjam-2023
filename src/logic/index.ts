@@ -28,6 +28,7 @@ Rune.initLogic({
       ),
       score: 0,
       desiredRotation: null,
+      overwatchMarker: null,
       stage: GameStage.Preparing,
       newBullets: [],
       ship: {
@@ -60,6 +61,7 @@ Rune.initLogic({
         id,
         position: [position.x, position.y],
         size: ENEMY_SIZE,
+        isVisible: false,
       };
     },
     setRole: (role, { game, playerId }) => {
@@ -70,6 +72,9 @@ Rune.initLogic({
     },
     setStage: (stage, { game }) => {
       game.stage = stage;
+    },
+    setOverwatchMarker: (marker, { game }) => {
+      game.overwatchMarker = marker;
     },
   },
   events: {
