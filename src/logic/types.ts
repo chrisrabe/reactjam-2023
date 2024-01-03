@@ -13,6 +13,7 @@ export interface GameState {
   stage: GameStage;
   players: Record<string, Player>;
   desiredRotation: number | null;
+  overwatchMarker: OverwatchMarker | null;
   newBullets: Bullet[];
   ship: ShipState;
   bullets: Record<string, Bullet>;
@@ -24,6 +25,7 @@ export type GameActions = {
   shoot: (id: string) => void;
   spawnEnemy: (params: { position: Vector2D; id: string }) => void;
   setRole: (role: PlayerRole) => void;
+  setOverwatchMarker: (marker: OverwatchMarker) => void;
   toggleReady: () => void;
   setStage: (stage: GameStage) => void;
 };
@@ -32,6 +34,10 @@ interface ShipState {
   position: Vector2D;
   rotation: number;
   size: number;
+}
+
+export interface OverwatchMarker {
+  position: Vector2D;
 }
 
 export interface Bullet {
@@ -45,11 +51,13 @@ export interface Enemy {
   id: string;
   position: [number, number];
   size: number;
+  isVisible: boolean;
 }
 
 export enum PlayerRole {
   Pilot = "pilot",
   Overwatch = "overwatch",
+  Spectator = "spectator",
 }
 
 export interface Player {

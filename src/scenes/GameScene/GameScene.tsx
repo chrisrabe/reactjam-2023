@@ -6,6 +6,7 @@ import Enemies from "./Enemies";
 import Controls from "./Controls";
 import HUD from "./HUD";
 import { GameState, PlayerRole } from "../../logic/types.ts";
+import OverwatchMarker from "./OverwatchMarker";
 
 interface GameScreenProps {
   game: GameState;
@@ -15,7 +16,9 @@ interface GameScreenProps {
 const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
   const width = window.innerWidth;
   const height = window.innerHeight;
-  const playerRole = playerId ? game.players[playerId].role : "spectator";
+  const playerRole = playerId
+    ? game.players[playerId].role
+    : PlayerRole.Spectator;
 
   return (
     <>
@@ -31,14 +34,18 @@ const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
           y={game.ship.position.y}
           size={game.ship.size}
           rotation={game.ship.rotation}
-          hasControls={playerRole === PlayerRole.Pilot}
+          role={playerRole}
         />
+        <OverwatchMarker role={playerRole} marker={game.overwatchMarker} />
         {playerRole !== PlayerRole.Overwatch && (
           <Bullets bullets={game.bullets} />
         )}
-        {playerRole !== PlayerRole.Pilot && <Enemies enemies={game.enemies} />}
+        <Enemies
+          enemies={game.enemies}
+          hasSpawner={playerRole !== PlayerRole.Pilot}
+        />
       </Stage>
-      {playerRole === PlayerRole.Pilot && <Controls />}
+      <Controls rotationDisabled={playerRole === PlayerRole.Overwatch} />
       <HUD score={game.score} />
     </>
   );

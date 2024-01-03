@@ -6,25 +6,28 @@ import EnemyGraphics from "./EnemyGraphics.tsx";
 
 interface EnemiesProps {
   enemies: Record<string, Enemy>;
+  hasSpawner: boolean;
 }
 
-const Enemies: React.FC<EnemiesProps> = ({ enemies }) => {
+const Enemies: React.FC<EnemiesProps> = ({ enemies, hasSpawner }) => {
   useEnemySpawner({
     screenWidth: window.innerWidth,
     screenHeight: window.innerHeight,
-    isEnabled: true, // only overwatch display enemies, no need to account for host
+    isEnabled: hasSpawner,
   });
 
   return (
     <Container name="enemies">
-      {Object.values(enemies).map((enemy) => (
-        <EnemyGraphics
-          key={enemy.id}
-          x={enemy.position[0]}
-          y={enemy.position[1]}
-          size={enemy.size}
-        />
-      ))}
+      {Object.values(enemies)
+        .filter((enemy) => enemy.isVisible || hasSpawner)
+        .map((enemy) => (
+          <EnemyGraphics
+            key={enemy.id}
+            x={enemy.position[0]}
+            y={enemy.position[1]}
+            size={enemy.size}
+          />
+        ))}
     </Container>
   );
 };

@@ -6,6 +6,7 @@ import moveEnemies from "./moveEnemies.ts";
 import checkGameOver from "./checkGameOver.ts";
 import { BULLET_SIZE, ENEMY_SIZE, SHIP_SIZE } from "./constants.ts";
 import updateScore from "./updateScore.ts";
+import markEnemies from "./markEnemies.ts";
 
 Rune.initLogic({
   minPlayers: 2,
@@ -28,6 +29,7 @@ Rune.initLogic({
       ),
       score: 0,
       desiredRotation: null,
+      overwatchMarker: null,
       stage: GameStage.Preparing,
       newBullets: [],
       ship: {
@@ -60,6 +62,7 @@ Rune.initLogic({
         id,
         position: [position.x, position.y],
         size: ENEMY_SIZE,
+        isVisible: false,
       };
     },
     setRole: (role, { game, playerId }) => {
@@ -70,6 +73,9 @@ Rune.initLogic({
     },
     setStage: (stage, { game }) => {
       game.stage = stage;
+    },
+    setOverwatchMarker: (marker, { game }) => {
+      game.overwatchMarker = marker;
     },
   },
   events: {
@@ -84,6 +90,7 @@ Rune.initLogic({
   update: ({ game }) => {
     updateRotation(game);
     updateBullets(game);
+    markEnemies(game);
     moveEnemies(game);
     updateScore(game);
     purgeOutOfBounds(game);
