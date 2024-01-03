@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Graphics } from "@pixi/react";
-import { Graphics as PixiGraphics } from "pixi.js";
+import { BlurFilter, Graphics as PixiGraphics } from "pixi.js";
 
 interface BulletGraphicsProps {
   x: number;

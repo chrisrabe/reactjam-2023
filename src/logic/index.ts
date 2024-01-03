@@ -28,7 +28,7 @@ Rune.initLogic({
       ),
       score: 0,
       desiredRotation: null,
-      stage: GameStage.Playing,
+      stage: GameStage.Preparing,
       newBullets: [],
       ship: {
         position: {
