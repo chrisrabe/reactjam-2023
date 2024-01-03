@@ -12,7 +12,7 @@ const Enemies: React.FC<EnemiesProps> = ({ enemies }) => {
   useEnemySpawner({
     screenWidth: window.innerWidth,
     screenHeight: window.innerHeight,
-    isHost: true, // only overwatch display enemies, no need to account for host
+    isEnabled: true, // only overwatch display enemies, no need to account for host
   });
 
   return (
