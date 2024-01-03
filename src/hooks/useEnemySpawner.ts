@@ -7,13 +7,13 @@ const SPAWN_INTERVAL = 2000; // ms
 interface EnemySpawnerProps {
   screenWidth: number;
   screenHeight: number;
-  isHost: boolean;
+  isEnabled: boolean;
 }
 
 const useEnemySpawner = ({
   screenWidth,
   screenHeight,
-  isHost,
+  isEnabled,
 }: EnemySpawnerProps) => {
   const lastEnemySpawnTime = useRef<number>();
   const intervalRef = useRef<NodeJS.Timeout>();
@@ -53,13 +53,13 @@ const useEnemySpawner = ({
   };
 
   useEffect(() => {
-    if (isHost) {
+    if (isEnabled) {
       intervalRef.current = setInterval(() => spawnEnemy(), SPAWN_INTERVAL);
     }
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [isHost]);
+  }, [isEnabled]);
 };
 
 export default useEnemySpawner;

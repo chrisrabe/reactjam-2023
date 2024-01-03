@@ -8,7 +8,7 @@ interface BulletGraphicsProps {
 }
 
 const EnemyGraphics: React.FC<BulletGraphicsProps> = ({ x, y, size }) => {
-  return <CircleGraphics x={x} y={y} size={size} color="red" />;
+  return <CircleGraphics x={x} y={y} size={size} color="EF4444" />;
 };
 
 export default EnemyGraphics;

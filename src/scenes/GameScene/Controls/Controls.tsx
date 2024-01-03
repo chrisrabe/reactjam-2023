@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import ImageButton from "./ImageButton.tsx";
-import { MOVE_LEFT, MOVE_RIGHT, TAPPED } from "../../utils/events.ts";
+import { MOVE_LEFT, MOVE_RIGHT, TAPPED } from "../../../utils/events.ts";
 
 const BUTTON_SIZE = 50;
 const TAP_THRESHOLD = 200; // 200ms

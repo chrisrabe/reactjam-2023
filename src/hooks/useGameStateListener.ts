@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { GAME_STATE_CHANGED } from "../utils/events.ts";
 import { GameState } from "../logic/types.ts";
+import { Players } from "rune-games-sdk";
 
 export interface ChangeParams {
   game: GameState;
   futureGame?: GameState;
   yourPlayerId?: string;
+  players: Players;
 }
 
 interface GameStateListener {

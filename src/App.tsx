@@ -1,68 +1,45 @@
 import { useRef, useState } from "react";
-import { GameState } from "./logic/types.ts";
-import { Stage } from "@pixi/react";
-import Ship from "./components/Ship";
-import Controls from "./components/Controls";
+import { GameStage, GameState } from "./logic/types.ts";
 import useRuneClient from "./hooks/useRuneClient.ts";
-import Bullets from "./components/Bullets";
 import useGameStateListener, {
   ChangeParams,
 } from "./hooks/useGameStateListener.ts";
-import Enemies from "./components/Enemies";
-import HUD from "./components/HUD";
+import GameScene from "./scenes/GameScene";
+import LobbyScene from "./scenes/LobbyScene";
+import { Players } from "rune-games-sdk";
 
 function App() {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-
-  const [isHost, setIsHost] = useState(false);
+  const [playerId, setPlayerId] = useState<string>();
+  const playersRef = useRef<Players>();
   const [game, setGame] = useState<GameState>();
-  const rotationInterpolator = useRef(Rune.interpolator<number>());
   useRuneClient();
 
-  const onGameStateChange = ({
-    game,
-    futureGame,
-    yourPlayerId,
-  }: ChangeParams) => {
-    rotationInterpolator.current.update({
-      game: game.ship.rotation,
-      futureGame: futureGame?.desiredRotation
-        ? futureGame.desiredRotation
-        : game.ship.rotation,
-    });
-
+  const onGameStateChange = ({ game, yourPlayerId, players }: ChangeParams) => {
+    playersRef.current = players;
     setGame(game);
-    setIsHost(yourPlayerId === game.host);
+    setPlayerId(yourPlayerId);
   };
 
   useGameStateListener({ onGameStateChange });
 
-  if (!game) {
+  if (!game || !playerId || !playersRef.current) {
     return <div>Loading...</div>;
   }
 
   return (
     <>
-      <Stage
-        width={width}
-        height={height}
-        options={{
-          background: "18181B",
-        }}
-      >
-        <Ship
-          x={game.ship.position.x}
-          y={game.ship.position.y}
-          size={game.ship.size}
-          rotation={rotationInterpolator.current.getPosition()}
-          hasControls
+      {(game.stage === GameStage.Preparing ||
+        game.stage === GameStage.Starting) && (
+        <LobbyScene
+          game={game}
+          playerId={playerId}
+          players={playersRef.current}
         />
-        <Bullets bullets={game.bullets} />
-        <Enemies enemies={game.enemies} isHost={isHost} />
-      </Stage>
-      <Controls />
-      <HUD score={game.score} />
+      )}
+      {(game.stage === GameStage.Playing ||
+        game.stage === GameStage.GameOver) && (
+        <GameScene game={game} playerId={playerId} />
+      )}
     </>
   );
 }

@@ -1,6 +1,8 @@
 body {
   margin: 0;
   font-family: 'Courier New', monospace;
+  background: #18181B;
+  color: white;
 }
 
 canvas {
