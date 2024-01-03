@@ -10,10 +10,15 @@ interface LobbySceneProps {
   players: Players;
 }
 
-const roles = Object.values(PlayerRole);
+const roles = Object.values(PlayerRole).filter(
+  // TODO: Add Spectator support in future.
+  (role) => role != PlayerRole.Spectator,
+);
+
 const roleColors: Record<PlayerRole, string> = {
   overwatch: "#C084FC",
   pilot: "#A3E635",
+  spectator: "#38BDF8",
 };
 
 const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {

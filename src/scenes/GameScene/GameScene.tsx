@@ -15,7 +15,9 @@ interface GameScreenProps {
 const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
   const width = window.innerWidth;
   const height = window.innerHeight;
-  const playerRole = playerId ? game.players[playerId].role : "spectator";
+  const playerRole = playerId
+    ? game.players[playerId].role
+    : PlayerRole.Spectator;
 
   return (
     <>
@@ -31,14 +33,14 @@ const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
           y={game.ship.position.y}
           size={game.ship.size}
           rotation={game.ship.rotation}
-          hasControls={playerRole === PlayerRole.Pilot}
+          role={playerRole}
         />
         {playerRole !== PlayerRole.Overwatch && (
           <Bullets bullets={game.bullets} />
         )}
         {playerRole !== PlayerRole.Pilot && <Enemies enemies={game.enemies} />}
       </Stage>
-      {playerRole === PlayerRole.Pilot && <Controls />}
+      <Controls rotationDisabled={playerRole === PlayerRole.Overwatch} />
       <HUD score={game.score} />
     </>
   );

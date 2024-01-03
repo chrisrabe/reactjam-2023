@@ -5,7 +5,11 @@ import { MOVE_LEFT, MOVE_RIGHT, TAPPED } from "../../../utils/events.ts";
 const BUTTON_SIZE = 50;
 const TAP_THRESHOLD = 200; // 200ms
 
-const Controls: React.FC = () => {
+interface ControlsProps {
+  rotationDisabled: boolean;
+}
+
+const Controls: React.FC<ControlsProps> = ({ rotationDisabled }) => {
   const pointerDownTime = useRef<number>(0);
 
   const onLeftPress = () => {
@@ -20,12 +24,21 @@ const Controls: React.FC = () => {
     pointerDownTime.current = Date.now();
   };
 
-  const onPointerUp = () => {
+  const onPointerUp = (event: PointerEvent) => {
     const pointerUpTime = Date.now();
     const duration = pointerUpTime - pointerDownTime.current;
 
     if (duration < TAP_THRESHOLD) {
-      document.dispatchEvent(new Event(TAPPED));
+      document.dispatchEvent(
+        new CustomEvent(TAPPED, {
+          detail: {
+            position: {
+              x: event.clientX,
+              y: event.clientY,
+            },
+          },
+        }),
+      );
     }
   };
 
@@ -38,6 +51,8 @@ const Controls: React.FC = () => {
       document.removeEventListener("pointerup", onPointerUp);
     };
   }, []);
+
+  if (rotationDisabled) return <></>;
 
   return (
     <div

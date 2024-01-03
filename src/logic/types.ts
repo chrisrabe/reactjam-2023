@@ -50,6 +50,7 @@ export interface Enemy {
 export enum PlayerRole {
   Pilot = "pilot",
   Overwatch = "overwatch",
+  Spectator = "spectator",
 }
 
 export interface Player {
