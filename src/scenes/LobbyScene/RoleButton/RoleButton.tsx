@@ -7,6 +7,7 @@ interface RoleButtonProps {
   playerNames: string[];
   onClick: () => void;
   color: string;
+  disabled: boolean;
 }
 
 const RoleButton: React.FC<RoleButtonProps> = ({
@@ -15,6 +16,7 @@ const RoleButton: React.FC<RoleButtonProps> = ({
   playerNames,
   onClick,
   color,
+  disabled,
 }) => {
   const btnColor = isSelected
     ? {
@@ -38,6 +40,7 @@ const RoleButton: React.FC<RoleButtonProps> = ({
         textAlign: "start",
       }}
       onClick={onClick}
+      disabled={disabled}
     >
       <img
         src={`/assets/avatars/${role}_avatar.png`}

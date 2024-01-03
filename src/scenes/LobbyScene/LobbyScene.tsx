@@ -1,5 +1,5 @@
 import React from "react";
-import { GameState, PlayerRole } from "../../logic/types.ts";
+import { GameStage, GameState, PlayerRole } from "../../logic/types.ts";
 import RoleButton from "./RoleButton";
 import { Players } from "rune-games-sdk";
 import ReadyButton from "./ReadyButton";
@@ -66,6 +66,7 @@ const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
               Rune.actions.setRole(role);
             }}
             color={roleColors[role]}
+            disabled={game.stage === GameStage.Starting}
           />
         ))}
       </div>
