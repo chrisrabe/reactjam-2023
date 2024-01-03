@@ -2,6 +2,7 @@ import type { RuneClient } from "rune-games-sdk";
 
 export enum GameStage {
   Preparing = "preparing",
+  Starting = "starting",
   Playing = "playing",
   GameOver = "gameover",
 }
@@ -24,6 +25,7 @@ export type GameActions = {
   spawnEnemy: (params: { position: Vector2D; id: string }) => void;
   setRole: (role: PlayerRole) => void;
   toggleReady: () => void;
+  setStage: (stage: GameStage) => void;
 };
 
 interface ShipState {

@@ -28,7 +28,8 @@ function App() {
 
   return (
     <>
-      {game.stage === GameStage.Preparing && (
+      {(game.stage === GameStage.Preparing ||
+        game.stage === GameStage.Starting) && (
         <LobbyScene
           game={game}
           playerId={playerId}

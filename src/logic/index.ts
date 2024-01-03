@@ -68,6 +68,9 @@ Rune.initLogic({
     toggleReady: (_, { game, playerId }) => {
       game.players[playerId].isReady = !game.players[playerId].isReady;
     },
+    setStage: (stage, { game }) => {
+      game.stage = stage;
+    },
   },
   events: {
     playerLeft: (playerId, { game, allPlayerIds }) => {
