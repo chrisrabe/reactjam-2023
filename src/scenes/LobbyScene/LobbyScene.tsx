@@ -1,32 +1,21 @@
-import React, { useEffect, useMemo } from "react";
+import React from "react";
 import { GameState, PlayerRole } from "../../logic/types.ts";
 import RoleButton from "./RoleButton";
 import { Players } from "rune-games-sdk";
 
 interface LobbySceneProps {
   game: GameState;
-  playerId?: string;
+  playerId: string;
   players: Players;
 }
 
+const roles = Object.values(PlayerRole);
+
 const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
-  const { pilotNames, overwatchNames } = useMemo(() => {
-    const pilotNames: string[] = [];
-    const overwatchNames: string[] = [];
-
-    for (const player of Object.values(game.players)) {
-      const bucket =
-        player.role === PlayerRole.Pilot ? pilotNames : overwatchNames;
-      const name =
-        player.id === playerId ? "You" : players[player.id].displayName;
-      bucket.push(name);
-    }
-
-    return {
-      pilotNames,
-      overwatchNames,
-    };
-  }, [game.players, playerId, players]);
+  const getPlayerNamesWithRole = (role: PlayerRole) =>
+    Object.values(game.players)
+      .filter((p) => p.role === role)
+      .map((p) => (p.id === playerId ? "You" : players[p.id].displayName));
 
   return (
     <div
@@ -43,28 +32,24 @@ const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
         style={{ marginTop: 25 }}
       />
       <h1 style={{ textTransform: "uppercase" }}>Phantom Radar</h1>
-      {playerId && (
-        <div
-          style={{
-            width: "80%",
-            display: "flex",
-            flexDirection: "column",
-            gap: 25,
-            marginTop: 25,
-          }}
-        >
+      <div
+        style={{
+          width: "80%",
+          display: "flex",
+          flexDirection: "column",
+          gap: 25,
+          marginTop: 25,
+        }}
+      >
+        {roles.map((role) => (
           <RoleButton
-            role={PlayerRole.Pilot}
-            isSelected={game.players[playerId].role === PlayerRole.Pilot}
-            playerNames={pilotNames}
+            key={role}
+            role={role}
+            isSelected={game.players[playerId].role === role}
+            playerNames={getPlayerNamesWithRole(role)}
           />
-          <RoleButton
-            role={PlayerRole.Overwatch}
-            isSelected={game.players[playerId].role === PlayerRole.Overwatch}
-            playerNames={overwatchNames}
-          />
-        </div>
-      )}
+        ))}
+      </div>
     </div>
   );
 };

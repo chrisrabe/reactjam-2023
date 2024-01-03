@@ -62,6 +62,9 @@ Rune.initLogic({
         size: ENEMY_SIZE,
       };
     },
+    setRole: (role, { game, playerId }) => {
+      game.players[playerId].role = role;
+    },
   },
   events: {
     playerLeft: (playerId, { game, allPlayerIds }) => {

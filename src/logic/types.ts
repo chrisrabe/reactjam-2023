@@ -22,6 +22,7 @@ export type GameActions = {
   rotate: (rotationSpeed: number) => void;
   shoot: (id: string) => void;
   spawnEnemy: (params: { position: Vector2D; id: string }) => void;
+  setRole: (role: PlayerRole) => void;
 };
 
 interface ShipState {
@@ -44,8 +45,8 @@ export interface Enemy {
 }
 
 export enum PlayerRole {
-  Overwatch = "overwatch",
   Pilot = "pilot",
+  Overwatch = "overwatch",
 }
 
 export interface Player {

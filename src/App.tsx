@@ -22,7 +22,7 @@ function App() {
 
   useGameStateListener({ onGameStateChange });
 
-  if (!game || !playersRef.current) {
+  if (!game || !playerId || !playersRef.current) {
     return <div>Loading...</div>;
   }
 
