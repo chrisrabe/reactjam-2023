@@ -23,6 +23,7 @@ export type GameActions = {
   shoot: (id: string) => void;
   spawnEnemy: (params: { position: Vector2D; id: string }) => void;
   setRole: (role: PlayerRole) => void;
+  toggleReady: () => void;
 };
 
 interface ShipState {

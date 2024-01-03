@@ -69,7 +69,11 @@ const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
           />
         ))}
       </div>
-      <ReadyButton color={playerRoleColor} />
+      <ReadyButton
+        color={playerRoleColor}
+        isReady={game.players[playerId].isReady}
+        numReady={Object.values(game.players).filter((p) => p.isReady).length}
+      />
     </div>
   );
 };

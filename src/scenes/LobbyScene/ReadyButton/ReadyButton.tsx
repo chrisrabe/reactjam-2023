@@ -2,9 +2,15 @@ import React from "react";
 
 interface ReadyButtonProps {
   color: string;
+  numReady: number;
+  isReady: boolean;
 }
 
-const ReadyButton: React.FC<ReadyButtonProps> = ({ color }) => {
+const ReadyButton: React.FC<ReadyButtonProps> = ({
+  color,
+  numReady,
+  isReady,
+}) => {
   return (
     <button
       style={{
@@ -15,9 +21,14 @@ const ReadyButton: React.FC<ReadyButtonProps> = ({ color }) => {
         fontSize: "1.5rem",
         fontWeight: "bold",
         borderRadius: 20,
+        gap: 5,
+        display: "flex",
+        justifyContent: "center",
       }}
+      onClick={() => Rune.actions.toggleReady()}
     >
-      Ready (0/2)
+      <span>{isReady ? "Abort" : "Ready Up"}</span>
+      <span>({numReady}/2)</span>
     </button>
   );
 };
