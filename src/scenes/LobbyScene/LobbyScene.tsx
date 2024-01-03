@@ -2,6 +2,7 @@ import React from "react";
 import { GameState, PlayerRole } from "../../logic/types.ts";
 import RoleButton from "./RoleButton";
 import { Players } from "rune-games-sdk";
+import ReadyButton from "./ReadyButton";
 
 interface LobbySceneProps {
   game: GameState;
@@ -10,12 +11,18 @@ interface LobbySceneProps {
 }
 
 const roles = Object.values(PlayerRole);
+const roleColors: Record<PlayerRole, string> = {
+  overwatch: "#C084FC",
+  pilot: "#A3E635",
+};
 
 const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
   const getPlayerNamesWithRole = (role: PlayerRole) =>
     Object.values(game.players)
       .filter((p) => p.role === role)
       .map((p) => (p.id === playerId ? "You" : players[p.id].displayName));
+
+  const playerRoleColor = roleColors[game.players[playerId].role];
 
   return (
     <div
@@ -31,7 +38,14 @@ const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
         alt="Phantom Radar Logo"
         style={{ marginTop: 25 }}
       />
-      <h1 style={{ textTransform: "uppercase" }}>Phantom Radar</h1>
+      <h1
+        style={{
+          textTransform: "uppercase",
+          color: playerRoleColor,
+        }}
+      >
+        Phantom Radar
+      </h1>
       <div
         style={{
           width: "80%",
@@ -39,6 +53,7 @@ const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
           flexDirection: "column",
           gap: 25,
           marginTop: 25,
+          marginBottom: 50,
         }}
       >
         {roles.map((role) => (
@@ -50,9 +65,11 @@ const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
             onClick={() => {
               Rune.actions.setRole(role);
             }}
+            color={roleColors[role]}
           />
         ))}
       </div>
+      <ReadyButton color={playerRoleColor} />
     </div>
   );
 };

@@ -6,24 +6,20 @@ interface RoleButtonProps {
   isSelected: boolean;
   playerNames: string[];
   onClick: () => void;
+  color: string;
 }
-
-const roleColors: Record<PlayerRole, string> = {
-  overwatch: "#C084FC",
-  pilot: "#A3E635",
-};
 
 const RoleButton: React.FC<RoleButtonProps> = ({
   role,
   isSelected,
   playerNames,
   onClick,
+  color,
 }) => {
-  const roleColor = roleColors[role];
   const btnColor = isSelected
     ? {
-        boxShadow: `0 0 15px 3px ${roleColor}`,
-        background: roleColor,
+        boxShadow: `0 0 15px 3px ${color}`,
+        background: color,
       }
     : {};
 
@@ -51,7 +47,7 @@ const RoleButton: React.FC<RoleButtonProps> = ({
           borderRadius: "50%",
           position: "absolute",
           borderWidth: 2,
-          borderColor: isSelected ? roleColor : "white",
+          borderColor: isSelected ? color : "white",
           borderStyle: "solid",
           ...btnColor,
         }}
