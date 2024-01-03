@@ -1,81 +1,23 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Container } from "@pixi/react";
 import BulletGraphics from "./BulletGraphics.tsx";
 import { Bullet } from "../../logic/types.ts";
-import { Interpolator } from "rune-games-sdk";
-import useGameStateListener, {
-  ChangeParams,
-} from "../../hooks/useGameStateListener.ts";
 
 interface BulletsProps {
   bullets: Record<string, Bullet>;
 }
 
 const Bullets: React.FC<BulletsProps> = ({ bullets }) => {
-  const bulletInterpolators = useRef<
-    Record<string, Interpolator<[number, number]>>
-  >({});
-
-  const onGameStateChange = ({ game, futureGame }: ChangeParams) => {
-    const idsToRemove = Object.keys(bulletInterpolators.current).reduce<
-      Record<string, string>
-    >((a, k) => {
-      a[k] = k;
-      return a;
-    }, {});
-
-    // Add and update interpolators
-    for (const bulletId of Object.keys(game.bullets)) {
-      if (!bulletInterpolators.current[bulletId]) {
-        bulletInterpolators.current[bulletId] =
-          Rune.interpolator<[number, number]>();
-      } else {
-        delete idsToRemove[bulletId];
-      }
-
-      const interpolator = bulletInterpolators.current[bulletId];
-      interpolator.update({
-        game: game.bullets[bulletId].position,
-        futureGame: futureGame?.bullets[bulletId]
-          ? futureGame?.bullets[bulletId].position
-          : game.bullets[bulletId].position,
-      });
-    }
-
-    // Remove interpolators
-    for (const bulletId of Object.keys(idsToRemove)) {
-      delete bulletInterpolators.current[bulletId];
-    }
-  };
-
-  useGameStateListener({ onGameStateChange });
-
   return (
     <Container name="bullets">
-      {Object.keys(bullets).map((bulletId) => {
-        const bulletData = bullets[bulletId];
-        const interpolator = bulletInterpolators.current[bulletId];
-
-        if (!bulletData || !interpolator) {
-          console.warn(
-            "No bullet data or interpolator",
-            bulletData,
-            interpolator,
-          );
-          return <></>;
-        }
-
-        const position = interpolator.getPosition();
-
-        return (
-          <BulletGraphics
-            key={bulletId}
-            x={position[0]}
-            y={position[1]}
-            size={bulletData.size}
-          />
-        );
-      })}
+      {Object.values(bullets).map((bullet) => (
+        <BulletGraphics
+          key={bullet.id}
+          x={bullet.position[0]}
+          y={bullet.position[1]}
+          size={bullet.size}
+        />
+      ))}
     </Container>
   );
 };
