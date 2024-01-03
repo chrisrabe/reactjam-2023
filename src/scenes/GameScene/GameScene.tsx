@@ -40,7 +40,10 @@ const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
         {playerRole !== PlayerRole.Overwatch && (
           <Bullets bullets={game.bullets} />
         )}
-        {playerRole !== PlayerRole.Pilot && <Enemies enemies={game.enemies} />}
+        <Enemies
+          enemies={game.enemies}
+          hasSpawner={playerRole !== PlayerRole.Pilot}
+        />
       </Stage>
       <Controls rotationDisabled={playerRole === PlayerRole.Overwatch} />
       <HUD score={game.score} />

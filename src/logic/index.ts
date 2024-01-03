@@ -6,6 +6,7 @@ import moveEnemies from "./moveEnemies.ts";
 import checkGameOver from "./checkGameOver.ts";
 import { BULLET_SIZE, ENEMY_SIZE, SHIP_SIZE } from "./constants.ts";
 import updateScore from "./updateScore.ts";
+import markEnemies from "./markEnemies.ts";
 
 Rune.initLogic({
   minPlayers: 2,
@@ -89,6 +90,7 @@ Rune.initLogic({
   update: ({ game }) => {
     updateRotation(game);
     updateBullets(game);
+    markEnemies(game);
     moveEnemies(game);
     updateScore(game);
     purgeOutOfBounds(game);
