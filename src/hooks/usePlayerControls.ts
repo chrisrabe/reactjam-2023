@@ -15,38 +15,37 @@ const usePlayerControls = ({
   onTap,
   disabled,
 }: PlayerControlHookProps) => {
-  const handleTap = useCallback(
-    (event: Event) => {
-      if (!onTap) return;
-      const e = event as CustomEvent;
-      onTap(e.detail);
-    },
-    [onTap],
-  );
+  const handleTap = (event: Event) => {
+    if (!onTap) return;
+    const e = event as CustomEvent;
+    onTap(e.detail);
+  };
 
-  const handleRotateLeft = useCallback(() => {
+  const handleRotateLeft = () => {
     if (!onRotateLeft) return;
     onRotateLeft();
-  }, [onRotateLeft]);
+  };
 
-  const handleRotateRight = useCallback(() => {
+  const handleRotateRight = () => {
     if (!onRotateRight) return;
     onRotateRight();
-  }, [onRotateRight]);
+  };
 
   useEffect(() => {
     if (disabled) return;
 
-    document.addEventListener(MOVE_LEFT, handleRotateLeft);
-    document.addEventListener(MOVE_RIGHT, handleRotateRight);
-    document.addEventListener(TAPPED, handleTap);
+    if (onRotateLeft) document.addEventListener(MOVE_LEFT, handleRotateLeft);
+    if (onRotateRight) document.addEventListener(MOVE_RIGHT, handleRotateRight);
+    if (onTap) document.addEventListener(TAPPED, handleTap);
 
     return () => {
-      document.removeEventListener(MOVE_LEFT, handleRotateLeft);
-      document.removeEventListener(MOVE_RIGHT, handleRotateLeft);
-      document.removeEventListener(TAPPED, handleTap);
+      if (onRotateLeft)
+        document.removeEventListener(MOVE_LEFT, handleRotateLeft);
+      if (onRotateRight)
+        document.removeEventListener(MOVE_RIGHT, handleRotateLeft);
+      if (onTap) document.removeEventListener(TAPPED, handleTap);
     };
-  }, [disabled, handleRotateLeft, handleRotateRight, handleTap]);
+  }, []);
 };
 
 export default usePlayerControls;

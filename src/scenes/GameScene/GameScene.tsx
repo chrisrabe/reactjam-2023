@@ -6,6 +6,7 @@ import Enemies from "./Enemies";
 import Controls from "./Controls";
 import HUD from "./HUD";
 import { GameState, PlayerRole } from "../../logic/types.ts";
+import OverwatchMarker from "./OverwatchMarker";
 
 interface GameScreenProps {
   game: GameState;
@@ -35,6 +36,7 @@ const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
           rotation={game.ship.rotation}
           role={playerRole}
         />
+        <OverwatchMarker role={playerRole} marker={game.overwatchMarker} />
         {playerRole !== PlayerRole.Overwatch && (
           <Bullets bullets={game.bullets} />
         )}

@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from "react";
 import ImageButton from "./ImageButton.tsx";
 import { MOVE_LEFT, MOVE_RIGHT, TAPPED } from "../../../utils/events.ts";
+import useThrottle from "../../../hooks/useThrottle.ts";
 
 const BUTTON_SIZE = 50;
 const TAP_THRESHOLD = 200; // 200ms
+const THROTTLE_LIMIT = 100; // 100ms bc Rune can only do 10 events per sec
 
 interface ControlsProps {
   rotationDisabled: boolean;
@@ -19,6 +21,9 @@ const Controls: React.FC<ControlsProps> = ({ rotationDisabled }) => {
   const onRightPress = () => {
     document.dispatchEvent(new Event(MOVE_RIGHT));
   };
+
+  const throttledOnLeftPress = useThrottle(onLeftPress, THROTTLE_LIMIT);
+  const throttledOnRightPress = useThrottle(onRightPress, THROTTLE_LIMIT);
 
   const onPointerDown = () => {
     pointerDownTime.current = Date.now();
@@ -67,13 +72,13 @@ const Controls: React.FC<ControlsProps> = ({ rotationDisabled }) => {
     >
       <ImageButton
         image="assets/ui/left_button.svg"
-        onPress={onLeftPress}
+        onPress={throttledOnLeftPress}
         width={BUTTON_SIZE}
         height={BUTTON_SIZE}
       />
       <ImageButton
         image="assets/ui/right_button.svg"
-        onPress={onRightPress}
+        onPress={throttledOnRightPress}
         width={BUTTON_SIZE}
         height={BUTTON_SIZE}
       />
