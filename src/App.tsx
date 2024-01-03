@@ -36,7 +36,8 @@ function App() {
           players={playersRef.current}
         />
       )}
-      {game.stage === GameStage.Playing && (
+      {(game.stage === GameStage.Playing ||
+        game.stage === GameStage.GameOver) && (
         <GameScene game={game} playerId={playerId} />
       )}
     </>
