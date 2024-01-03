@@ -73,6 +73,9 @@ const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
         color={playerRoleColor}
         isReady={game.players[playerId].isReady}
         numReady={Object.values(game.players).filter((p) => p.isReady).length}
+        disabled={roles.some(
+          (role) => getPlayerNamesWithRole(role).length === 0,
+        )}
       />
     </div>
   );

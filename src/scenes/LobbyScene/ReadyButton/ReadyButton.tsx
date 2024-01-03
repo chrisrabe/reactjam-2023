@@ -4,18 +4,20 @@ interface ReadyButtonProps {
   color: string;
   numReady: number;
   isReady: boolean;
+  disabled?: boolean;
 }
 
 const ReadyButton: React.FC<ReadyButtonProps> = ({
   color,
   numReady,
   isReady,
+  disabled,
 }) => {
   return (
     <button
       style={{
         border: "none",
-        backgroundColor: color,
+        backgroundColor: disabled ? "gray" : color,
         padding: "1rem",
         width: "80%",
         fontSize: "1.5rem",
@@ -25,6 +27,7 @@ const ReadyButton: React.FC<ReadyButtonProps> = ({
         display: "flex",
         justifyContent: "center",
       }}
+      disabled={disabled}
       onClick={() => Rune.actions.toggleReady()}
     >
       <span>{isReady ? "Abort" : "Ready Up"}</span>
