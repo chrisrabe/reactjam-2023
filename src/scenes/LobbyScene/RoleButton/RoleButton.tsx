@@ -5,6 +5,7 @@ interface RoleButtonProps {
   role: PlayerRole;
   isSelected: boolean;
   playerNames: string[];
+  onClick: () => void;
 }
 
 const roleColors: Record<PlayerRole, string> = {
@@ -16,6 +17,7 @@ const RoleButton: React.FC<RoleButtonProps> = ({
   role,
   isSelected,
   playerNames,
+  onClick,
 }) => {
   const roleColor = roleColors[role];
   const btnColor = isSelected
@@ -39,6 +41,7 @@ const RoleButton: React.FC<RoleButtonProps> = ({
         background: "none",
         textAlign: "start",
       }}
+      onClick={onClick}
     >
       <img
         src={`/assets/avatars/${role}_avatar.png`}

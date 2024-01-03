@@ -47,6 +47,9 @@ const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
             role={role}
             isSelected={game.players[playerId].role === role}
             playerNames={getPlayerNamesWithRole(role)}
+            onClick={() => {
+              Rune.actions.setRole(role);
+            }}
           />
         ))}
       </div>
