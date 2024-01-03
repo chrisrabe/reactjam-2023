@@ -6,14 +6,13 @@ import EnemyGraphics from "./EnemyGraphics.tsx";
 
 interface EnemiesProps {
   enemies: Record<string, Enemy>;
-  isHost: boolean;
 }
 
-const Enemies: React.FC<EnemiesProps> = ({ enemies, isHost }) => {
+const Enemies: React.FC<EnemiesProps> = ({ enemies }) => {
   useEnemySpawner({
     screenWidth: window.innerWidth,
     screenHeight: window.innerHeight,
-    isHost,
+    isHost: true, // only overwatch display enemies, no need to account for host
   });
 
   return (

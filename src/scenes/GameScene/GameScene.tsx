@@ -5,7 +5,7 @@ import Bullets from "./Bullets";
 import Enemies from "./Enemies";
 import Controls from "./Controls";
 import HUD from "./HUD";
-import { GameState } from "../../logic/types.ts";
+import { GameState, PlayerRole } from "../../logic/types.ts";
 
 interface GameScreenProps {
   game: GameState;
@@ -15,7 +15,7 @@ interface GameScreenProps {
 const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
   const width = window.innerWidth;
   const height = window.innerHeight;
-  const isHost = game.host === playerId;
+  const playerRole = playerId ? game.players[playerId].role : "spectator";
 
   return (
     <>
@@ -31,12 +31,14 @@ const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
           y={game.ship.position.y}
           size={game.ship.size}
           rotation={game.ship.rotation}
-          hasControls
+          hasControls={playerRole === PlayerRole.Pilot}
         />
-        <Bullets bullets={game.bullets} />
-        <Enemies enemies={game.enemies} isHost={isHost} />
+        {playerRole !== PlayerRole.Overwatch && (
+          <Bullets bullets={game.bullets} />
+        )}
+        {playerRole !== PlayerRole.Pilot && <Enemies enemies={game.enemies} />}
       </Stage>
-      <Controls />
+      {playerRole === PlayerRole.Pilot && <Controls />}
       <HUD score={game.score} />
     </>
   );
