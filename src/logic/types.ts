@@ -1,6 +1,7 @@
 import type { RuneClient } from "rune-games-sdk";
 
 export enum GameStage {
+  Preparing = "preparing",
   Playing = "playing",
   GameOver = "gameover",
 }
@@ -9,6 +10,7 @@ export interface GameState {
   score: number;
   host: string;
   stage: GameStage;
+  players: Record<string, Player>;
   desiredRotation: number | null;
   newBullets: Bullet[];
   ship: ShipState;
@@ -39,6 +41,17 @@ export interface Enemy {
   id: string;
   position: [number, number];
   size: number;
+}
+
+export enum PlayerRole {
+  Overwatch = "overwatch",
+  Pilot = "pilot",
+}
+
+export interface Player {
+  id: string;
+  role: PlayerRole;
+  isReady: boolean;
 }
 
 export interface Vector2D {

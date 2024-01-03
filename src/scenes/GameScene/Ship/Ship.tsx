@@ -1,6 +1,6 @@
 import React from "react";
 import ShipGraphics, { ShipGraphicsProps } from "./ShipGraphics.tsx";
-import usePlayerControls from "../../hooks/usePlayerControls.ts";
+import usePlayerControls from "../../../hooks/usePlayerControls.ts";
 import { nanoid } from "nanoid";
 
 interface ShipProps extends ShipGraphicsProps {

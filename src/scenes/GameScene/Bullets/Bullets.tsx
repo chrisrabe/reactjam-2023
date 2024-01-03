@@ -1,7 +1,7 @@
 import React from "react";
 import { Container } from "@pixi/react";
 import BulletGraphics from "./BulletGraphics.tsx";
-import { Bullet } from "../../logic/types.ts";
+import { Bullet } from "../../../logic/types.ts";
 
 interface BulletsProps {
   bullets: Record<string, Bullet>;

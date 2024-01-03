@@ -1,10 +1,10 @@
 import React from "react";
 import { Stage } from "@pixi/react";
-import Ship from "../../components/Ship";
-import Bullets from "../../components/Bullets";
-import Enemies from "../../components/Enemies";
-import Controls from "../../components/Controls";
-import HUD from "../../components/HUD";
+import Ship from "./Ship";
+import Bullets from "./Bullets";
+import Enemies from "./Enemies";
+import Controls from "./Controls";
+import HUD from "./HUD";
 import { GameState } from "../../logic/types.ts";
 
 interface GameScreenProps {
@@ -12,7 +12,7 @@ interface GameScreenProps {
   playerId?: string;
 }
 
-const GameScreen: React.FC<GameScreenProps> = ({ game, playerId }) => {
+const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
   const width = window.innerWidth;
   const height = window.innerHeight;
   const isHost = game.host === playerId;
@@ -42,4 +42,4 @@ const GameScreen: React.FC<GameScreenProps> = ({ game, playerId }) => {
   );
 };
 
-export default GameScreen;
+export default GameScene;

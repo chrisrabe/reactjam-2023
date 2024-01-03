@@ -1,4 +1,4 @@
-import { Bullet, GameStage, GameState } from "./types.ts";
+import { Bullet, GameStage, GameState, Player, PlayerRole } from "./types.ts";
 import updateBullets from "./updateBullets.ts";
 import updateRotation from "./updateRotation.ts";
 import purgeOutOfBounds from "./purgeOutOfBounds.ts";
@@ -11,8 +11,21 @@ Rune.initLogic({
   minPlayers: 2,
   maxPlayers: 4,
   setup: (allPlayerIds): GameState => {
+    const roles = [PlayerRole.Pilot, PlayerRole.Overwatch];
+
     return {
       host: allPlayerIds[0],
+      players: allPlayerIds.reduce<Record<string, Player>>(
+        (a, playerId, idx) => {
+          a[playerId] = {
+            id: playerId,
+            isReady: false,
+            role: roles[idx],
+          };
+          return a;
+        },
+        {},
+      ),
       score: 0,
       desiredRotation: null,
       stage: GameStage.Playing,

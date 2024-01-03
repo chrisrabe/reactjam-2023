@@ -1,6 +1,6 @@
 import React from "react";
-import useEnemySpawner from "../../hooks/useEnemySpawner.ts";
-import { Enemy } from "../../logic/types.ts";
+import useEnemySpawner from "../../../hooks/useEnemySpawner.ts";
+import { Enemy } from "../../../logic/types.ts";
 import { Container } from "@pixi/react";
 import EnemyGraphics from "./EnemyGraphics.tsx";
 

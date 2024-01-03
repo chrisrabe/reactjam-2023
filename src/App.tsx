@@ -4,7 +4,7 @@ import useRuneClient from "./hooks/useRuneClient.ts";
 import useGameStateListener, {
   ChangeParams,
 } from "./hooks/useGameStateListener.ts";
-import GameScreen from "./screens/GameScreen";
+import GameScene from "./scenes/GameScene";
 
 function App() {
   const [playerId, setPlayerId] = useState<string>();
@@ -24,7 +24,7 @@ function App() {
 
   return (
     <>
-      <GameScreen game={game} playerId={playerId} />
+      <GameScene game={game} playerId={playerId} />
     </>
   );
 }
