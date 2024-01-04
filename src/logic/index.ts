@@ -45,8 +45,8 @@ Rune.initLogic({
     };
   },
   actions: {
-    rotate: (rotationSpeed, { game }) => {
-      game.desiredRotation = game.ship.rotation + rotationSpeed;
+    setRotation: (rotation, { game }) => {
+      game.desiredRotation = rotation;
     },
     shoot: (id, { game }) => {
       const bullet: Bullet = {

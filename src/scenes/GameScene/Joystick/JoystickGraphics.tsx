@@ -7,12 +7,14 @@ interface JoystickGraphicsProps {
   position: Vector2D;
   size: number;
   rotation: number;
+  hasRotationLine: boolean;
 }
 
 const JoystickGraphics: React.FC<JoystickGraphicsProps> = ({
   position,
   size,
   rotation,
+  hasRotationLine,
 }) => {
   const draw = (g: PixiGraphics) => {
     g.clear();
@@ -29,14 +31,15 @@ const JoystickGraphics: React.FC<JoystickGraphicsProps> = ({
     g.drawCircle(0, 0, innerCircleSize);
     g.endFill();
 
-    // Convert rotation to radians and draw the rotation line
-    const rotationRadians = rotation * (Math.PI / 180);
-    const lineLength = size; // Line extends to the edge of the outer circle
-    g.moveTo(0, 0); // Start at the center
-    g.lineTo(
-      lineLength * Math.cos(rotationRadians),
-      lineLength * Math.sin(rotationRadians),
-    ); // End point based on rotation
+    if (hasRotationLine) {
+      const rotationRadians = rotation * (Math.PI / 180);
+      const lineLength = size; // Line extends to the edge of the outer circle
+      g.moveTo(0, 0); // Start at the center
+      g.lineTo(
+        lineLength * Math.cos(rotationRadians),
+        lineLength * Math.sin(rotationRadians),
+      );
+    }
   };
   return <Graphics draw={draw} />;
 };

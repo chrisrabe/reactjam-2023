@@ -21,7 +21,7 @@ export interface GameState {
 }
 
 export type GameActions = {
-  rotate: (rotationSpeed: number) => void;
+  setRotation: (rotation: number) => void;
   shoot: (id: string) => void;
   spawnEnemy: (params: { position: Vector2D; id: string }) => void;
   setRole: (role: PlayerRole) => void;

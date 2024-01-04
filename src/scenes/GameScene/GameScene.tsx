@@ -29,13 +29,13 @@ const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
           background: "18181B",
         }}
       >
+        {playerRole === PlayerRole.Pilot && <Joystick />}
         <Ship
           x={game.ship.position.x}
           y={game.ship.position.y}
           size={game.ship.size}
           rotation={game.ship.rotation}
         />
-        {playerRole === PlayerRole.Pilot && <Joystick />}
         <OverwatchMarker role={playerRole} marker={game.overwatchMarker} />
         {playerRole !== PlayerRole.Overwatch && (
           <Bullets bullets={game.bullets} />

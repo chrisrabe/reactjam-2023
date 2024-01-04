@@ -3,8 +3,8 @@ const BULLET_SPEED = 25;
 
 const getUpdatedPosition = (bullet: Bullet): [number, number] => {
   const velocity: Vector2D = {
-    x: Math.sin(bullet.rotation) * BULLET_SPEED,
-    y: -Math.cos(bullet.rotation) * BULLET_SPEED,
+    x: Math.cos(bullet.rotation) * BULLET_SPEED,
+    y: Math.sin(bullet.rotation) * BULLET_SPEED,
   };
   const [x, y] = bullet.position;
   return [x + velocity.x, y + velocity.y];

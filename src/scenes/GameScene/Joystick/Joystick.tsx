@@ -5,12 +5,17 @@ import usePlayerControls, {
 } from "../../../hooks/usePlayerControls.ts";
 import { Vector2D } from "../../../logic/types.ts";
 import JoystickGraphics from "./JoystickGraphics.tsx";
+import useThrottle from "../../../hooks/useThrottle.ts";
+
+const THROTTLE_LIMIT = 100; // 100ms (10 actions / sec)
 
 const Joystick: React.FC = () => {
   const joystickPos = useRef<Vector2D>();
   const [rotation, setRotation] = useState(0);
+  const hasRotationLine = useRef<boolean>(false);
 
   const onTap = () => {
+    hasRotationLine.current = false;
     Rune.actions.shoot(nanoid());
   };
 
@@ -21,6 +26,7 @@ const Joystick: React.FC = () => {
 
   const onPointerUp = () => {
     joystickPos.current = undefined;
+    hasRotationLine.current = false;
     setRotation(0);
   };
 
@@ -32,13 +38,17 @@ const Joystick: React.FC = () => {
 
     const angle = Math.atan2(dy, dx);
 
+    hasRotationLine.current = true;
     setRotation(angle);
+    Rune.actions.setRotation(angle);
   };
+
+  const throttledPointerMove = useThrottle(onPointerMove, THROTTLE_LIMIT);
 
   usePlayerControls({
     onPointerUp,
     onPointerDown,
-    onPointerMove,
+    onPointerMove: throttledPointerMove,
     onTap,
   });
 
@@ -49,6 +59,7 @@ const Joystick: React.FC = () => {
           position={joystickPos.current}
           size={50}
           rotation={rotation}
+          hasRotationLine={hasRotationLine.current}
         />
       )}
     </>
