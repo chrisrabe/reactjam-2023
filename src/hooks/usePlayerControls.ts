@@ -4,18 +4,31 @@ import { Vector2D } from "../logic/types.ts";
 const TAP_THRESHOLD = 200; // 200ms
 
 interface PlayerControlHookProps {
+  onPointerDown?: (params: { position: Vector2D }) => void;
+  onPointerUp?: (params: { position: Vector2D }) => void;
   onTap?: (params: { position: Vector2D }) => void;
   disabled?: boolean;
 }
 
-const usePlayerControls = ({ onTap, disabled }: PlayerControlHookProps) => {
+const usePlayerControls = ({
+  onPointerDown,
+  onPointerUp,
+  onTap,
+  disabled,
+}: PlayerControlHookProps) => {
   const pointerDownTime = useRef<number>(0);
 
-  const onPointerDown = () => {
+  const handlePointerDown = (event: PointerEvent) => {
     pointerDownTime.current = Date.now();
+
+    if (!onPointerDown) return;
+
+    onPointerDown({
+      position: { x: event.clientX, y: event.clientY },
+    });
   };
 
-  const onPointerUp = (event: PointerEvent) => {
+  const handlePointerUp = (event: PointerEvent) => {
     const pointerUpTime = Date.now();
     const duration = pointerUpTime - pointerDownTime.current;
 
@@ -27,17 +40,22 @@ const usePlayerControls = ({ onTap, disabled }: PlayerControlHookProps) => {
         },
       });
     }
+
+    if (!onPointerUp) return;
+    onPointerUp({
+      position: { x: event.clientX, y: event.clientY },
+    });
   };
 
   useEffect(() => {
     if (disabled) return;
 
-    document.addEventListener("pointerdown", onPointerDown);
-    document.addEventListener("pointerup", onPointerUp);
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("pointerup", handlePointerUp);
 
     return () => {
-      document.removeEventListener("pointerdown", onPointerDown);
-      document.removeEventListener("pointerup", onPointerUp);
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("pointerup", handlePointerUp);
     };
   }, []);
 };

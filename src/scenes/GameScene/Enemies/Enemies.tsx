@@ -13,7 +13,7 @@ const Enemies: React.FC<EnemiesProps> = ({ enemies, hasSpawner }) => {
   useEnemySpawner({
     screenWidth: window.innerWidth,
     screenHeight: window.innerHeight,
-    isEnabled: hasSpawner,
+    isEnabled: false,
   });
 
   return (
