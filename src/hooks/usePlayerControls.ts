@@ -1,49 +1,43 @@
-import { useCallback, useEffect } from "react";
-import { MOVE_LEFT, MOVE_RIGHT, TAPPED } from "../utils/events.ts";
+import { useEffect, useRef } from "react";
 import { Vector2D } from "../logic/types.ts";
 
+const TAP_THRESHOLD = 200; // 200ms
+
 interface PlayerControlHookProps {
-  onRotateLeft?: () => void;
-  onRotateRight?: () => void;
   onTap?: (params: { position: Vector2D }) => void;
   disabled?: boolean;
 }
 
-const usePlayerControls = ({
-  onRotateLeft,
-  onRotateRight,
-  onTap,
-  disabled,
-}: PlayerControlHookProps) => {
-  const handleTap = (event: Event) => {
-    if (!onTap) return;
-    const e = event as CustomEvent;
-    onTap(e.detail);
+const usePlayerControls = ({ onTap, disabled }: PlayerControlHookProps) => {
+  const pointerDownTime = useRef<number>(0);
+
+  const onPointerDown = () => {
+    pointerDownTime.current = Date.now();
   };
 
-  const handleRotateLeft = () => {
-    if (!onRotateLeft) return;
-    onRotateLeft();
-  };
+  const onPointerUp = (event: PointerEvent) => {
+    const pointerUpTime = Date.now();
+    const duration = pointerUpTime - pointerDownTime.current;
 
-  const handleRotateRight = () => {
-    if (!onRotateRight) return;
-    onRotateRight();
+    if (onTap && duration < TAP_THRESHOLD) {
+      onTap({
+        position: {
+          x: event.clientX,
+          y: event.clientY,
+        },
+      });
+    }
   };
 
   useEffect(() => {
     if (disabled) return;
 
-    if (onRotateLeft) document.addEventListener(MOVE_LEFT, handleRotateLeft);
-    if (onRotateRight) document.addEventListener(MOVE_RIGHT, handleRotateRight);
-    if (onTap) document.addEventListener(TAPPED, handleTap);
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("pointerup", onPointerUp);
 
     return () => {
-      if (onRotateLeft)
-        document.removeEventListener(MOVE_LEFT, handleRotateLeft);
-      if (onRotateRight)
-        document.removeEventListener(MOVE_RIGHT, handleRotateLeft);
-      if (onTap) document.removeEventListener(TAPPED, handleTap);
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("pointerup", onPointerUp);
     };
   }, []);
 };

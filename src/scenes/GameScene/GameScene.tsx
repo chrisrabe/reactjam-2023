@@ -3,7 +3,6 @@ import { Stage } from "@pixi/react";
 import Ship from "./Ship";
 import Bullets from "./Bullets";
 import Enemies from "./Enemies";
-import Controls from "./Controls";
 import HUD from "./HUD";
 import { GameState, PlayerRole } from "../../logic/types.ts";
 import OverwatchMarker from "./OverwatchMarker";
@@ -45,7 +44,6 @@ const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
           hasSpawner={playerRole !== PlayerRole.Pilot}
         />
       </Stage>
-      <Controls rotationDisabled={playerRole === PlayerRole.Overwatch} />
       <HUD score={game.score} />
     </>
   );
