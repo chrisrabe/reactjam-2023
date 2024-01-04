@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   OverwatchMarker as Marker,
   PlayerRole,
@@ -14,7 +14,24 @@ interface OverwatchMarkerProps {
   marker: Marker | null;
 }
 
+const MARKER_DURATION = 250;
+
 const OverwatchMarker: React.FC<OverwatchMarkerProps> = ({ role, marker }) => {
+  const removeMarker = useRef<NodeJS.Timeout>();
+  const [isVisible, setIsVisible] = useState(marker !== null);
+
+  useEffect(() => {
+    if (removeMarker.current) clearTimeout(removeMarker.current);
+    if (marker) {
+      setIsVisible(true);
+    } else {
+      removeMarker.current = setTimeout(
+        () => setIsVisible(false),
+        MARKER_DURATION,
+      );
+    }
+  }, [marker]);
+
   const onTap = ({ position }: { position: Vector2D }) => {
     Rune.actions.setOverwatchMarker({
       position,
@@ -52,7 +69,7 @@ const OverwatchMarker: React.FC<OverwatchMarkerProps> = ({ role, marker }) => {
 
   return (
     <Container name="marker">
-      {marker && <Graphics draw={draw} anchor={0.5} />}
+      {isVisible && <Graphics draw={draw} anchor={0.5} />}
     </Container>
   );
 };
