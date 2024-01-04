@@ -25,19 +25,19 @@ const ShipGraphics: React.FC<ShipGraphicsProps> = ({
     const tipSize = size / 5;
 
     // Ship body
-    g.beginFill("A3E635");
-    g.moveTo(0, -halfSize);
-    g.lineTo(-halfSize, halfSize);
-    g.lineTo(halfSize, halfSize);
-    g.lineTo(0, -halfSize);
+    g.beginFill(0xa3e635); // Hexadecimal color for fill
+    g.moveTo(halfSize, 0); // Start at the tip (right side)
+    g.lineTo(-halfSize, -halfSize); // Left top
+    g.lineTo(-halfSize, halfSize); // Left bottom
+    g.lineTo(halfSize, 0); // Back to the tip
     g.endFill();
 
     // Tip of ship
-    g.beginFill("F87171");
-    g.moveTo(0, -halfSize);
-    g.lineTo(-tipSize / 2, -halfSize + tipSize);
-    g.lineTo(tipSize / 2, -halfSize + tipSize);
-    g.lineTo(0, -halfSize);
+    g.beginFill(0xf87171); // Hexadecimal color for fill
+    g.moveTo(halfSize, 0); // Start at the tip
+    g.lineTo(halfSize - tipSize, -tipSize / 2); // Tip left top
+    g.lineTo(halfSize - tipSize, tipSize / 2); // Tip left bottom
+    g.lineTo(halfSize, 0); // Back to the tip
     g.endFill();
   };
 

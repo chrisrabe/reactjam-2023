@@ -3,10 +3,10 @@ import { Stage } from "@pixi/react";
 import Ship from "./Ship";
 import Bullets from "./Bullets";
 import Enemies from "./Enemies";
-import Controls from "./Controls";
 import HUD from "./HUD";
 import { GameState, PlayerRole } from "../../logic/types.ts";
 import OverwatchMarker from "./OverwatchMarker";
+import Joystick from "./Joystick";
 
 interface GameScreenProps {
   game: GameState;
@@ -29,12 +29,12 @@ const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
           background: "18181B",
         }}
       >
+        {playerRole === PlayerRole.Pilot && <Joystick />}
         <Ship
           x={game.ship.position.x}
           y={game.ship.position.y}
           size={game.ship.size}
           rotation={game.ship.rotation}
-          role={playerRole}
         />
         <OverwatchMarker role={playerRole} marker={game.overwatchMarker} />
         {playerRole !== PlayerRole.Overwatch && (
@@ -45,7 +45,6 @@ const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
           hasSpawner={playerRole !== PlayerRole.Pilot}
         />
       </Stage>
-      <Controls rotationDisabled={playerRole === PlayerRole.Overwatch} />
       <HUD score={game.score} />
     </>
   );
