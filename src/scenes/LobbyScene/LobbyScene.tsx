@@ -3,6 +3,9 @@ import { GameStage, GameState, PlayerRole } from "../../logic/types.ts";
 import RoleButton from "./RoleButton";
 import { Players } from "rune-games-sdk";
 import ReadyButton from "./ReadyButton";
+import { Stage } from "@pixi/react";
+import StarBG from "../../backgrounds/StarBG";
+import RadarBG from "../../backgrounds/RadarBG";
 
 interface LobbySceneProps {
   game: GameState;
@@ -27,64 +30,86 @@ const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
       .filter((p) => p.role === role)
       .map((p) => (p.id === playerId ? "You" : players[p.id].displayName));
 
+  const playerRole = game.players[playerId].role;
   const playerRoleColor = roleColors[game.players[playerId].role];
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        height: window.innerHeight,
-      }}
-    >
-      <img
-        src="/assets/logo.svg"
-        alt="Phantom Radar Logo"
-        style={{ marginTop: 25 }}
-      />
-      <h1
-        style={{
-          textTransform: "uppercase",
-          color: playerRoleColor,
+    <>
+      <Stage
+        width={window.innerWidth}
+        height={window.innerHeight}
+        options={{
+          background: "18181B",
         }}
       >
-        Phantom Radar
-      </h1>
+        {playerRole === PlayerRole.Pilot && (
+          <StarBG width={window.innerWidth} height={window.innerHeight} />
+        )}
+        {playerRole === PlayerRole.Overwatch && (
+          <RadarBG width={window.innerWidth} height={window.innerHeight} />
+        )}
+      </Stage>
       <div
         style={{
-          width: "80%",
+          position: "absolute",
+          zIndex: 1,
+          top: 0,
+          left: 0,
           display: "flex",
           flexDirection: "column",
-          gap: 25,
-          marginTop: 25,
-          marginBottom: 50,
+          alignItems: "center",
+          width: "100%",
+          height: "100%",
         }}
       >
-        {roles.map((role) => (
-          <RoleButton
-            key={role}
-            role={role}
-            isSelected={game.players[playerId].role === role}
-            playerNames={getPlayerNamesWithRole(role)}
-            onClick={() => {
-              Rune.actions.setRole(role);
-            }}
-            color={roleColors[role]}
-            disabled={game.stage === GameStage.Starting}
-          />
-        ))}
+        <img
+          src="/assets/logo.svg"
+          alt="Phantom Radar Logo"
+          style={{ marginTop: 25 }}
+        />
+        <h1
+          style={{
+            textTransform: "uppercase",
+            color: playerRoleColor,
+          }}
+        >
+          Phantom Radar
+        </h1>
+        <div
+          style={{
+            width: "80%",
+            display: "flex",
+            flexDirection: "column",
+            gap: 25,
+            marginTop: 25,
+            marginBottom: 50,
+          }}
+        >
+          {roles.map((role) => (
+            <RoleButton
+              key={role}
+              role={role}
+              isSelected={game.players[playerId].role === role}
+              playerNames={getPlayerNamesWithRole(role)}
+              onClick={() => {
+                Rune.actions.setRole(role);
+              }}
+              color={roleColors[role]}
+              disabled={game.stage === GameStage.Starting}
+            />
+          ))}
+        </div>
+        <ReadyButton
+          stage={game.stage}
+          color={playerRoleColor}
+          isReady={game.players[playerId].isReady}
+          numReady={Object.values(game.players).filter((p) => p.isReady).length}
+          disabled={roles.some(
+            (role) => getPlayerNamesWithRole(role).length === 0,
+          )}
+        />
       </div>
-      <ReadyButton
-        stage={game.stage}
-        color={playerRoleColor}
-        isReady={game.players[playerId].isReady}
-        numReady={Object.values(game.players).filter((p) => p.isReady).length}
-        disabled={roles.some(
-          (role) => getPlayerNamesWithRole(role).length === 0,
-        )}
-      />
-    </div>
+    </>
   );
 };
 

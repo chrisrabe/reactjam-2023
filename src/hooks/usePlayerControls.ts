@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { Vector2D } from "../logic/types.ts";
 
 const TAP_THRESHOLD = 200; // 200ms
-const MIN_DRAG_DISTANCE = 50;
+const MIN_DRAG_DISTANCE = 25;
 
 export interface Pointer {
   position: Vector2D;

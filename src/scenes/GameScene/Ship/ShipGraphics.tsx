@@ -7,6 +7,7 @@ export interface ShipGraphicsProps {
   y: number;
   size: number;
   rotation: number;
+  hasTurret?: boolean;
 }
 
 const ShipGraphics: React.FC<ShipGraphicsProps> = ({
@@ -14,6 +15,7 @@ const ShipGraphics: React.FC<ShipGraphicsProps> = ({
   y,
   size,
   rotation,
+  hasTurret,
 }) => {
   const draw = (g: PixiGraphics) => {
     g.clear();
@@ -22,7 +24,6 @@ const ShipGraphics: React.FC<ShipGraphicsProps> = ({
     g.rotation = rotation;
 
     const halfSize = size / 2;
-    const tipSize = size / 5;
 
     // Ship body
     g.beginFill(0xa3e635); // Hexadecimal color for fill
@@ -32,13 +33,18 @@ const ShipGraphics: React.FC<ShipGraphicsProps> = ({
     g.lineTo(halfSize, 0); // Back to the tip
     g.endFill();
 
-    // Tip of ship
-    g.beginFill(0xf87171); // Hexadecimal color for fill
-    g.moveTo(halfSize, 0); // Start at the tip
-    g.lineTo(halfSize - tipSize, -tipSize / 2); // Tip left top
-    g.lineTo(halfSize - tipSize, tipSize / 2); // Tip left bottom
-    g.lineTo(halfSize, 0); // Back to the tip
-    g.endFill();
+    if (hasTurret) {
+      // Line from tip towards center
+      g.lineStyle(3, 0xf87171, 1); // White line, 2px wide
+      g.moveTo(halfSize, 0); // Start at the tip
+      g.lineTo(0, 0); // Draw line towards the center
+
+      // Pilot seat
+      g.lineStyle(2, 0xf87171);
+      g.beginFill("white");
+      g.drawCircle(-halfSize / 3, 0, halfSize / 3);
+      g.endFill();
+    }
   };
 
   return <Graphics draw={draw} anchor={0.5} />;

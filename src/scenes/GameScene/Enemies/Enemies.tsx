@@ -26,6 +26,7 @@ const Enemies: React.FC<EnemiesProps> = ({ enemies, hasSpawner }) => {
             x={enemy.position[0]}
             y={enemy.position[1]}
             size={enemy.size}
+            showPilot={!hasSpawner} // overwatch can't see pilot
           />
         ))}
     </Container>
