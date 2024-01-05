@@ -19,12 +19,12 @@ const roleInstructions: Record<PlayerRole, Tutorial> = {
   },
   pilot: {
     objective:
-      "Stationary but deadly. Eliminate invisible enemies based on Overwatch's precise intel.",
+      "Stationary but deadly. Eliminate invisible phantoms based on Overwatch's precise intel.",
     controls: ["Hold and drag to rotate", "Tap to shoot"],
   },
   overwatch: {
     objective:
-      "Guide the Pilot using the radar to detect and strategise invisible enemies, ensuring successful strikes.",
+      "Guide the Pilot using the radar to detect and strategise against invisible phantoms, ensuring successful strikes.",
     controls: ["Tap enemies to notify pilot of their position"],
   },
 };
