@@ -16,7 +16,7 @@ import markEnemies from "./markEnemies.ts";
 
 Rune.initLogic({
   minPlayers: 2,
-  maxPlayers: 4,
+  maxPlayers: 2,
   setup: (allPlayerIds): GameState => {
     const roles = [PlayerRole.Pilot, PlayerRole.Overwatch];
 
