@@ -6,6 +6,7 @@ import usePlayerControls, {
 import { Vector2D } from "../../../logic/types.ts";
 import JoystickGraphics from "./JoystickGraphics.tsx";
 import useThrottle from "../../../hooks/useThrottle.ts";
+import { playSound } from "../../../sounds.ts";
 
 const THROTTLE_LIMIT = 100; // 100ms (10 actions / sec)
 
@@ -15,6 +16,7 @@ const Joystick: React.FC = () => {
   const hasRotationLine = useRef<boolean>(false);
 
   const onTap = () => {
+    playSound("laser", { once: true });
     hasRotationLine.current = false;
     Rune.actions.shoot(nanoid());
   };

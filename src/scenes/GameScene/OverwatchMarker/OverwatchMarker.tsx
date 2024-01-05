@@ -8,6 +8,7 @@ import { Container } from "@pixi/react";
 import usePlayerControls from "../../../hooks/usePlayerControls.ts";
 import { Graphics } from "@pixi/react";
 import { Graphics as PixiGraphics } from "pixi.js";
+import { playSound } from "../../../sounds.ts";
 
 interface OverwatchMarkerProps {
   role: PlayerRole;
@@ -33,6 +34,7 @@ const OverwatchMarker: React.FC<OverwatchMarkerProps> = ({ role, marker }) => {
   }, [marker]);
 
   const onTap = ({ position }: { position: Vector2D }) => {
+    playSound("ping", { once: true });
     Rune.actions.setOverwatchMarker({
       position,
     });

@@ -6,6 +6,7 @@ import ReadyButton from "./ReadyButton";
 import { Stage } from "@pixi/react";
 import StarBG from "../../backgrounds/StarBG";
 import RadarBG from "../../backgrounds/RadarBG";
+import { playSound } from "../../sounds.ts";
 
 interface LobbySceneProps {
   game: GameState;
@@ -92,6 +93,7 @@ const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
               isSelected={game.players[playerId].role === role}
               playerNames={getPlayerNamesWithRole(role)}
               onClick={() => {
+                playSound("beep", { once: true });
                 Rune.actions.setRole(role);
               }}
               color={roleColors[role]}
