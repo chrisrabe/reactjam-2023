@@ -57,10 +57,13 @@ const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
         {playerRole !== PlayerRole.Overwatch && (
           <Bullets bullets={game.bullets} scaleContext={gameToClient} />
         )}
-        {/*<Enemies*/}
-        {/*  enemies={game.enemies}*/}
-        {/*  hasSpawner={playerRole !== PlayerRole.Pilot}*/}
-        {/*/>*/}
+        <Enemies
+          enemies={game.enemies}
+          hasSpawner={playerRole !== PlayerRole.Pilot}
+          width={width}
+          height={height}
+          scaleContext={scaleContextValue}
+        />
       </Stage>
       <HUD score={game.score} />
     </>

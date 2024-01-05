@@ -1,6 +1,7 @@
 import { Vector2D } from "../logic/types.ts";
 import { nanoid } from "nanoid";
 import { useEffect, useRef } from "react";
+import { ScaleContextValue } from "../common/ScaleProvider/ScaleProvider.tsx";
 
 const SPAWN_INTERVAL = 1250; // ms
 
@@ -8,13 +9,16 @@ interface EnemySpawnerProps {
   screenWidth: number;
   screenHeight: number;
   isEnabled: boolean;
+  scaleContext: ScaleContextValue;
 }
 
 const useEnemySpawner = ({
   screenWidth,
   screenHeight,
   isEnabled,
+  scaleContext,
 }: EnemySpawnerProps) => {
+  const { clientToGame } = scaleContext;
   const lastEnemySpawnTime = useRef<number>();
   const intervalRef = useRef<NodeJS.Timeout>();
 
@@ -46,7 +50,10 @@ const useEnemySpawner = ({
 
     const enemy = {
       id: nanoid(),
-      position,
+      position: {
+        x: position.x * clientToGame.width,
+        y: position.y * clientToGame.height,
+      },
     };
 
     Rune.actions.spawnEnemy(enemy);
