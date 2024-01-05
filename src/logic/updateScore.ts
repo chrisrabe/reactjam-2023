@@ -1,5 +1,6 @@
 import { Bullet, Enemy, GameState } from "./types.ts";
 import { ENEMY_REWARD_POINTS } from "./constants.ts";
+import { playSound } from "../sounds.ts";
 
 const updateScore = (game: GameState) => {
   const bullets: Record<string, Bullet> = game.bullets;

@@ -3,6 +3,7 @@ const soundFiles = {
   beep: "assets/sounds/beep.wav",
   laser: "assets/sounds/laser.mp3",
   ping: "assets/sounds/ping.wav",
+  explosion: "assets/sounds/explosion.wav",
 };
 
 const sounds: Record<string, HTMLAudioElement> = {};
