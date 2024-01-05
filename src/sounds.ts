@@ -1,5 +1,5 @@
 const soundFiles = {
-  background: "assets/sounds/bg_sound.wav",
+  background: "assets/sounds/bg_sound.mp3",
   beep: "assets/sounds/beep.wav",
   laser: "assets/sounds/laser.mp3",
   ping: "assets/sounds/ping.wav",
