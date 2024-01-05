@@ -8,6 +8,7 @@ import { playSound } from "../../sounds.ts";
 import Tutorial from "./Tutorial";
 import RoleBG from "../../common/RoleBG";
 import { ScaleContextValue } from "../../utils/scaleContext.tsx";
+import logo from "../../assets/logo.svg";
 
 interface LobbySceneProps {
   game: GameState;
@@ -71,7 +72,7 @@ const LobbyScene: React.FC<LobbySceneProps> = ({
         }}
       >
         <img
-          src="/assets/logo.svg"
+          src={logo}
           alt="Phantom Radar Logo"
           style={{
             marginTop: 25 * gameToClient.height,

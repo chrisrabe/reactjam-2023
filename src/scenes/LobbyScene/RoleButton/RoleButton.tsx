@@ -1,5 +1,7 @@
 import React from "react";
 import { PlayerRole } from "../../../logic/types.ts";
+import pilotAvatar from "../../../assets/avatars/pilot_avatar.jpg";
+import overwatchAvatar from "../../../assets/avatars/overwatch_avatar.jpg";
 
 interface RoleButtonProps {
   role: PlayerRole;
@@ -43,7 +45,7 @@ const RoleButton: React.FC<RoleButtonProps> = ({
       disabled={disabled}
     >
       <img
-        src={`/assets/avatars/${role}_avatar.jpg`}
+        src={role === PlayerRole.Pilot ? pilotAvatar : overwatchAvatar}
         alt="Pilot avatar"
         style={{
           height: "inherit",
