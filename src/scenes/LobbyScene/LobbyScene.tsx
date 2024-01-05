@@ -4,15 +4,16 @@ import RoleButton from "./RoleButton";
 import { Players } from "rune-games-sdk";
 import ReadyButton from "./ReadyButton";
 import { Stage } from "@pixi/react";
-import StarBG from "../../backgrounds/StarBG";
-import RadarBG from "../../backgrounds/RadarBG";
 import { playSound } from "../../sounds.ts";
 import Tutorial from "./Tutorial";
+import RoleBG from "../../common/RoleBG";
+import { ScaleContextValue } from "../../utils/scaleContext.tsx";
 
 interface LobbySceneProps {
   game: GameState;
   playerId: string;
   players: Players;
+  scaleContextValue: ScaleContextValue;
 }
 
 const roles = Object.values(PlayerRole).filter(
@@ -26,7 +27,14 @@ const roleColors: Record<PlayerRole, string> = {
   spectator: "#38BDF8",
 };
 
-const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
+const LobbyScene: React.FC<LobbySceneProps> = ({
+  game,
+  playerId,
+  players,
+  scaleContextValue,
+}) => {
+  const { gameToClient } = scaleContextValue;
+
   const getPlayerNamesWithRole = (role: PlayerRole) =>
     Object.values(game.players)
       .filter((p) => p.role === role)
@@ -35,21 +43,19 @@ const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
   const playerRole = game.players[playerId].role;
   const playerRoleColor = roleColors[game.players[playerId].role];
 
+  const width = game.dimensions.width * gameToClient.width;
+  const height = game.dimensions.height * gameToClient.height;
+
   return (
     <>
       <Stage
-        width={window.innerWidth}
-        height={window.innerHeight}
+        width={width}
+        height={height}
         options={{
           background: "18181B",
         }}
       >
-        {playerRole === PlayerRole.Pilot && (
-          <StarBG width={window.innerWidth} height={window.innerHeight} />
-        )}
-        {playerRole === PlayerRole.Overwatch && (
-          <RadarBG width={window.innerWidth} height={window.innerHeight} />
-        )}
+        <RoleBG width={width} height={height} playerRole={playerRole} />
       </Stage>
       <div
         style={{
@@ -67,12 +73,17 @@ const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
         <img
           src="/assets/logo.svg"
           alt="Phantom Radar Logo"
-          style={{ marginTop: 25 }}
+          style={{
+            marginTop: 25 * gameToClient.height,
+            width: 100 * gameToClient.width,
+            height: 100 * gameToClient.height,
+          }}
         />
         <h1
           style={{
             textTransform: "uppercase",
             color: playerRoleColor,
+            fontSize: 35 * gameToClient.width,
           }}
         >
           Phantom Radar
@@ -82,9 +93,10 @@ const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
             width: "80%",
             display: "flex",
             flexDirection: "column",
-            gap: 25,
-            marginTop: 25,
-            marginBottom: 50,
+            gap: 25 * gameToClient.height,
+            marginTop: 25 * gameToClient.height,
+            marginBottom: 50 * gameToClient.height,
+            transform: `scale(${gameToClient.width})`,
           }}
         >
           {roles.map((role) => (
@@ -110,8 +122,13 @@ const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
           disabled={roles.some(
             (role) => getPlayerNamesWithRole(role).length === 0,
           )}
+          scale={gameToClient.width}
         />
-        <Tutorial role={playerRole} color={playerRoleColor} />
+        <Tutorial
+          role={playerRole}
+          color={playerRoleColor}
+          scale={gameToClient.width}
+        />
       </div>
     </>
   );

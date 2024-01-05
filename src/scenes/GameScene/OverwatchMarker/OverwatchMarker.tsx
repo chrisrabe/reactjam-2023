@@ -9,15 +9,22 @@ import usePlayerControls from "../../../hooks/usePlayerControls.ts";
 import { Graphics } from "@pixi/react";
 import { Graphics as PixiGraphics } from "pixi.js";
 import { playSound } from "../../../sounds.ts";
+import { ScaleContextValue } from "../../../utils/scaleContext.tsx";
 
 interface OverwatchMarkerProps {
   role: PlayerRole;
   marker: Marker | null;
+  scaleContext: ScaleContextValue;
 }
 
 const MARKER_DURATION = 250;
 
-const OverwatchMarker: React.FC<OverwatchMarkerProps> = ({ role, marker }) => {
+const OverwatchMarker: React.FC<OverwatchMarkerProps> = ({
+  role,
+  marker,
+  scaleContext,
+}) => {
+  const scaleContextRef = useRef<ScaleContextValue>(scaleContext); // this keeps scale in graphics redraw updated in real-time
   const removeMarker = useRef<NodeJS.Timeout>();
   const [isVisible, setIsVisible] = useState(marker !== null);
 
@@ -33,10 +40,21 @@ const OverwatchMarker: React.FC<OverwatchMarkerProps> = ({ role, marker }) => {
     }
   }, [marker]);
 
+  useEffect(() => {
+    scaleContextRef.current = scaleContext;
+  }, [scaleContext]);
+
   const onTap = ({ position }: { position: Vector2D }) => {
     playSound("ping", { once: true });
+    const { clientToGame } = scaleContextRef.current;
+
+    const gamePos = {
+      x: position.x * clientToGame.width,
+      y: position.y * clientToGame.height,
+    };
+
     Rune.actions.setOverwatchMarker({
-      position,
+      position: gamePos,
     });
   };
 
@@ -48,12 +66,19 @@ const OverwatchMarker: React.FC<OverwatchMarkerProps> = ({ role, marker }) => {
   const draw = (g: PixiGraphics) => {
     if (!marker) return;
 
+    const { gameToClient } = scaleContextRef.current;
+
+    const clientPos = {
+      x: marker.position.x * gameToClient.width,
+      y: marker.position.y * gameToClient.height,
+    };
+
     g.clear();
-    g.position.set(marker.position.x, marker.position.y);
+    g.position.set(clientPos.x, clientPos.y);
 
     g.lineStyle(2, "yellow");
 
-    const lineLength = 25; // Length of each line of the "X"
+    const lineLength = 25;
 
     // Draw first line of the "X"
     g.moveTo(-lineLength / 2, -lineLength / 2);

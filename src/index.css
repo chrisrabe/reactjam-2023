@@ -6,6 +6,10 @@ body {
   cursor: pointer !important;
 }
 
+button {
+  font-family: 'Courier New', monospace;
+}
+
 canvas {
   display: block;
 }

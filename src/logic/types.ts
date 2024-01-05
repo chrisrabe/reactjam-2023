@@ -18,6 +18,12 @@ export interface GameState {
   ship: ShipState;
   bullets: Record<string, Bullet>;
   enemies: Record<string, Enemy>;
+  dimensions: Dimensions;
+}
+
+export interface Dimensions {
+  width: number;
+  height: number;
 }
 
 export type GameActions = {

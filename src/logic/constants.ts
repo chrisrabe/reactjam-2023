@@ -4,3 +4,7 @@ export const BULLET_SIZE = 5;
 export const ENEMY_SPEED = 2;
 
 export const ENEMY_REWARD_POINTS = 100;
+
+// Dimensions at time of creating game
+export const GAME_WIDTH = 400;
+export const GAME_HEIGHT = 700;

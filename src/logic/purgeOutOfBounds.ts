@@ -1,11 +1,12 @@
 import { GameState, Vector2D } from "./types.ts";
+import { GAME_HEIGHT, GAME_WIDTH } from "./constants.ts";
 
 const isOutOfBounds = (position: Vector2D) => {
   return (
     position.x < 0 ||
-    position.x > window.innerWidth ||
+    position.x > GAME_WIDTH ||
     position.y < 0 ||
-    position.y > window.innerHeight
+    position.y > GAME_HEIGHT
   );
 };
 

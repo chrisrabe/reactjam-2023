@@ -4,7 +4,13 @@ import updateRotation from "./updateRotation.ts";
 import purgeOutOfBounds from "./purgeOutOfBounds.ts";
 import moveEnemies from "./moveEnemies.ts";
 import checkGameOver from "./checkGameOver.ts";
-import { BULLET_SIZE, ENEMY_SIZE, SHIP_SIZE } from "./constants.ts";
+import {
+  BULLET_SIZE,
+  ENEMY_SIZE,
+  SHIP_SIZE,
+  GAME_WIDTH,
+  GAME_HEIGHT,
+} from "./constants.ts";
 import updateScore from "./updateScore.ts";
 import markEnemies from "./markEnemies.ts";
 
@@ -28,14 +34,18 @@ Rune.initLogic({
         {},
       ),
       score: 0,
+      dimensions: {
+        width: GAME_WIDTH,
+        height: GAME_HEIGHT,
+      },
       desiredRotation: null,
       overwatchMarker: null,
       stage: GameStage.Preparing,
       newBullets: [],
       ship: {
         position: {
-          x: window.innerWidth / 2,
-          y: window.innerHeight / 2 - SHIP_SIZE / 2,
+          x: GAME_WIDTH / 2,
+          y: GAME_HEIGHT / 2 - SHIP_SIZE / 2,
         },
         rotation: 0,
         size: SHIP_SIZE,

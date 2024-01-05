@@ -7,17 +7,25 @@ import HUD from "./HUD";
 import { GameState, PlayerRole } from "../../logic/types.ts";
 import OverwatchMarker from "./OverwatchMarker";
 import Joystick from "./Joystick";
-import RadarBG from "../../backgrounds/RadarBG";
-import StarBG from "../../backgrounds/StarBG";
+import RoleBG from "../../common/RoleBG";
+import { ScaleContextValue } from "../../utils/scaleContext.tsx";
 
 interface GameScreenProps {
   game: GameState;
   playerId?: string;
+  scaleContextValue: ScaleContextValue;
 }
 
-const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+const GameScene: React.FC<GameScreenProps> = ({
+  game,
+  playerId,
+  scaleContextValue,
+}) => {
+  const { gameToClient } = scaleContextValue;
+
+  const width = game.dimensions.width * gameToClient.width;
+  const height = game.dimensions.height * gameToClient.height;
+
   const playerRole = playerId
     ? game.players[playerId].role
     : PlayerRole.Spectator;
@@ -31,27 +39,33 @@ const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
           background: "18181B",
         }}
       >
-        {playerRole === PlayerRole.Overwatch && (
-          <RadarBG width={width} height={height} />
-        )}
+        <RoleBG width={width} height={height} playerRole={playerRole} />
         {playerRole === PlayerRole.Pilot && (
-          <StarBG width={width} height={height} />
+          <Joystick scale={gameToClient.width} />
         )}
-        {playerRole === PlayerRole.Pilot && <Joystick />}
         <Ship
-          x={game.ship.position.x}
-          y={game.ship.position.y}
-          size={game.ship.size}
+          x={game.ship.position.x * gameToClient.width}
+          y={game.ship.position.y * gameToClient.height}
+          size={game.ship.size * gameToClient.width}
           rotation={game.ship.rotation}
           hasTurret={playerRole !== PlayerRole.Overwatch}
         />
-        <OverwatchMarker role={playerRole} marker={game.overwatchMarker} />
+        {playerRole === PlayerRole.Overwatch && (
+          <OverwatchMarker
+            role={playerRole}
+            marker={game.overwatchMarker}
+            scaleContext={scaleContextValue}
+          />
+        )}
         {playerRole !== PlayerRole.Overwatch && (
-          <Bullets bullets={game.bullets} />
+          <Bullets bullets={game.bullets} scaleContext={gameToClient} />
         )}
         <Enemies
           enemies={game.enemies}
           hasSpawner={playerRole !== PlayerRole.Pilot}
+          width={width}
+          height={height}
+          scaleContext={scaleContextValue}
         />
       </Stage>
       <HUD score={game.score} />

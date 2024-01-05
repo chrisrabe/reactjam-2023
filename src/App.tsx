@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { GameStage, GameState } from "./logic/types.ts";
+import { Dimensions, GameStage, GameState } from "./logic/types.ts";
 import useRuneClient from "./hooks/useRuneClient.ts";
 import useGameStateListener, {
   ChangeParams,
@@ -8,11 +8,14 @@ import GameScene from "./scenes/GameScene";
 import LobbyScene from "./scenes/LobbyScene";
 import { Players } from "rune-games-sdk";
 import { playSound } from "./sounds.ts";
+import useResize from "./hooks/useResize.ts";
 
 function App() {
   const [playerId, setPlayerId] = useState<string>();
   const playersRef = useRef<Players>();
   const [game, setGame] = useState<GameState>();
+  const { width, height } = useResize();
+
   useRuneClient();
 
   const onGameStateChange = ({ game, yourPlayerId, players }: ChangeParams) => {
@@ -41,6 +44,21 @@ function App() {
     return <div>Loading...</div>;
   }
 
+  const gameToClient: Dimensions = {
+    width: width / game.dimensions.width,
+    height: height / game.dimensions.height,
+  };
+
+  const clientToGame: Dimensions = {
+    width: game.dimensions.width / width,
+    height: game.dimensions.height / height,
+  };
+
+  const scaleContext = {
+    gameToClient,
+    clientToGame,
+  };
+
   return (
     <>
       {(game.stage === GameStage.Preparing ||
@@ -49,11 +67,16 @@ function App() {
           game={game}
           playerId={playerId}
           players={playersRef.current}
+          scaleContextValue={scaleContext}
         />
       )}
       {(game.stage === GameStage.Playing ||
         game.stage === GameStage.GameOver) && (
-        <GameScene game={game} playerId={playerId} />
+        <GameScene
+          game={game}
+          playerId={playerId}
+          scaleContextValue={scaleContext}
+        />
       )}
     </>
   );

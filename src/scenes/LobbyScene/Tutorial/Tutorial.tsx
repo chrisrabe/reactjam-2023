@@ -4,6 +4,7 @@ import { PlayerRole } from "../../../logic/types.ts";
 interface TutorialProps {
   role: PlayerRole;
   color: string;
+  scale: number;
 }
 
 interface Tutorial {
@@ -28,7 +29,7 @@ const roleInstructions: Record<PlayerRole, Tutorial> = {
   },
 };
 
-const Tutorial: React.FC<TutorialProps> = ({ role, color }) => {
+const Tutorial: React.FC<TutorialProps> = ({ role, color, scale }) => {
   const [isOpen, setIsOpen] = useState(false);
   const instructions = roleInstructions[role];
 
@@ -38,15 +39,9 @@ const Tutorial: React.FC<TutorialProps> = ({ role, color }) => {
         style={{
           border: "none",
           backgroundColor: "unset",
-          padding: "1rem",
-          width: "80%",
-          fontSize: "1.2rem",
-          borderRadius: 20,
-          gap: 5,
+          padding: 20 * scale,
+          fontSize: 16 * scale,
           color: "white",
-          display: "flex",
-          justifyContent: "center",
-          marginTop: "5%",
         }}
         onClick={() => setIsOpen(true)}
       >
@@ -56,22 +51,18 @@ const Tutorial: React.FC<TutorialProps> = ({ role, color }) => {
         <div
           style={{
             position: "absolute",
-            display: "flex",
-            height: "100%",
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
+            top: "25%",
+            width: "80%",
           }}
           onClick={() => setIsOpen(false)}
         >
           <div
             style={{
               background: "#18181B",
-              padding: 20,
-              height: "50%",
-              width: "80%",
+              padding: 20 * scale,
               borderRadius: 20,
               boxShadow: `0 0 15px 3px ${color}`,
+              transform: `scale(${scale})`,
             }}
           >
             <h2 style={{ textTransform: "capitalize" }}>{role}</h2>

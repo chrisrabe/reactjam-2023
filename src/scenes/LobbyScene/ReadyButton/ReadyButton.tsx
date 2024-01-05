@@ -8,6 +8,7 @@ interface ReadyButtonProps {
   isReady: boolean;
   stage: GameStage;
   disabled?: boolean;
+  scale: number;
 }
 
 const NUM_PLAYERS_REQUIRED = 2;
@@ -18,6 +19,7 @@ const ReadyButton: React.FC<ReadyButtonProps> = ({
   isReady,
   disabled,
   stage,
+  scale,
 }) => {
   const startTrigger = useRef<NodeJS.Timeout>();
 
@@ -44,13 +46,10 @@ const ReadyButton: React.FC<ReadyButtonProps> = ({
         border: "none",
         backgroundColor: disabled ? "gray" : color,
         padding: "1rem",
-        width: "80%",
-        fontSize: "1.5rem",
+        fontSize: 24 * scale,
         fontWeight: "bold",
         borderRadius: 20,
-        gap: 5,
-        display: "flex",
-        justifyContent: "center",
+        transform: `scale(${scale})`,
       }}
       disabled={disabled || stage === GameStage.Starting}
       onClick={() => {
