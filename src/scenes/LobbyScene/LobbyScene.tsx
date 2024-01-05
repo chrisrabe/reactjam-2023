@@ -7,6 +7,7 @@ import { Stage } from "@pixi/react";
 import StarBG from "../../backgrounds/StarBG";
 import RadarBG from "../../backgrounds/RadarBG";
 import { playSound } from "../../sounds.ts";
+import Tutorial from "./Tutorial";
 
 interface LobbySceneProps {
   game: GameState;
@@ -110,6 +111,7 @@ const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
             (role) => getPlayerNamesWithRole(role).length === 0,
           )}
         />
+        <Tutorial role={playerRole} color={playerRoleColor} />
       </div>
     </>
   );

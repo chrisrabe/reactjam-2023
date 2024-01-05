@@ -3,6 +3,7 @@ body {
   font-family: 'Courier New', monospace;
   background: #18181B;
   color: white;
+  cursor: pointer !important;
 }
 
 canvas {
