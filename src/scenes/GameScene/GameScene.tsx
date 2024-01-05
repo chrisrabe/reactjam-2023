@@ -13,11 +13,19 @@ import StarBG from "../../backgrounds/StarBG";
 interface GameScreenProps {
   game: GameState;
   playerId?: string;
+  scaleWidth: number;
+  scaleHeight: number;
 }
 
-const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+const GameScene: React.FC<GameScreenProps> = ({
+  game,
+  playerId,
+  scaleHeight,
+  scaleWidth,
+}) => {
+  const width = game.dimensions.width * scaleWidth;
+  const height = game.dimensions.height * scaleHeight;
+
   const playerRole = playerId
     ? game.players[playerId].role
     : PlayerRole.Spectator;
