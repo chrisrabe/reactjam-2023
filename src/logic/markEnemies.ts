@@ -1,4 +1,5 @@
 import { GameState } from "./types.ts";
+import { ENEMY_MARKED_REWARD } from "./constants.ts";
 
 const markEnemies = (game: GameState) => {
   if (!game.overwatchMarker) return;
@@ -14,6 +15,7 @@ const markEnemies = (game: GameState) => {
 
     if (distance < combinedSize) {
       enemy.isVisible = true;
+      game.score += ENEMY_MARKED_REWARD;
     }
   }
 

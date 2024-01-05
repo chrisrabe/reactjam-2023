@@ -7,6 +7,7 @@ const updateScore = (game: GameState) => {
 
   const bulletsToRemove = new Set<string>();
   const enemiesToRemove = new Set<string>();
+  let coordinatedAttacks = 0;
 
   Object.entries(bullets).forEach(([bulletId, bullet]) => {
     if (bulletsToRemove.has(bulletId)) return; // Skip if bullet is already marked for removal
@@ -22,11 +23,14 @@ const updateScore = (game: GameState) => {
       if (distance < bullet.size / 2 + enemy.size / 2) {
         bulletsToRemove.add(bulletId);
         enemiesToRemove.add(enemyId);
+        if (enemy.isVisible) coordinatedAttacks++;
       }
     });
   });
 
-  game.score += enemiesToRemove.size * ENEMY_REWARD_POINTS;
+  game.score +=
+    enemiesToRemove.size * ENEMY_REWARD_POINTS +
+    coordinatedAttacks * ENEMY_REWARD_POINTS;
 
   // Delete collided bullets and enemies
   bulletsToRemove.forEach((bulletId) => {
