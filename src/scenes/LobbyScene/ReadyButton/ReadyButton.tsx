@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { GameStage } from "../../../logic/types.ts";
+import { playSound } from "../../../sounds.ts";
 
 interface ReadyButtonProps {
   color: string;
@@ -52,7 +53,10 @@ const ReadyButton: React.FC<ReadyButtonProps> = ({
         justifyContent: "center",
       }}
       disabled={disabled || stage === GameStage.Starting}
-      onClick={() => Rune.actions.toggleReady()}
+      onClick={() => {
+        playSound("beep", { once: true });
+        Rune.actions.toggleReady();
+      }}
     >
       {stage === GameStage.Preparing && (
         <>
