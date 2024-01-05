@@ -7,6 +7,7 @@ import HUD from "./HUD";
 import { GameState, PlayerRole } from "../../logic/types.ts";
 import OverwatchMarker from "./OverwatchMarker";
 import Joystick from "./Joystick";
+import RadarBG from "./RadarBG";
 
 interface GameScreenProps {
   game: GameState;
@@ -29,6 +30,7 @@ const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
           background: "18181B",
         }}
       >
+        <RadarBG width={width} height={height} />
         {playerRole === PlayerRole.Pilot && <Joystick />}
         <Ship
           x={game.ship.position.x}
