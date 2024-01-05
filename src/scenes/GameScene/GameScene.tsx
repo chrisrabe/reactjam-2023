@@ -18,7 +18,9 @@ interface GameScreenProps {
 }
 
 const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
-  const { gameToClient } = useContext(ScaleContext);
+  const scaleContextValue = useContext(ScaleContext);
+
+  const { gameToClient } = scaleContextValue;
 
   const width = game.dimensions.width * gameToClient.width;
   const height = game.dimensions.height * gameToClient.height;
@@ -47,7 +49,11 @@ const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
           rotation={game.ship.rotation}
           hasTurret={playerRole !== PlayerRole.Overwatch}
         />
-        {/*<OverwatchMarker role={playerRole} marker={game.overwatchMarker} />*/}
+        <OverwatchMarker
+          role={playerRole}
+          marker={game.overwatchMarker}
+          scaleContext={scaleContextValue}
+        />
         {/*{playerRole !== PlayerRole.Overwatch && (*/}
         {/*  <Bullets bullets={game.bullets} />*/}
         {/*)}*/}

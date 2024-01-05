@@ -1,7 +1,7 @@
 import { Dimensions } from "../../logic/types.ts";
 import React, { createContext, ReactNode } from "react";
 
-interface ScaleContextValue {
+export interface ScaleContextValue {
   gameToClient: Dimensions;
   clientToGame: Dimensions;
 }
