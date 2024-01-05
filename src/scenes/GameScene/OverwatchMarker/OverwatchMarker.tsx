@@ -9,7 +9,7 @@ import usePlayerControls from "../../../hooks/usePlayerControls.ts";
 import { Graphics } from "@pixi/react";
 import { Graphics as PixiGraphics } from "pixi.js";
 import { playSound } from "../../../sounds.ts";
-import { ScaleContextValue } from "../../../common/ScaleProvider/ScaleProvider.tsx";
+import { ScaleContextValue } from "../../../utils/scaleContext.tsx";
 
 interface OverwatchMarkerProps {
   role: PlayerRole;

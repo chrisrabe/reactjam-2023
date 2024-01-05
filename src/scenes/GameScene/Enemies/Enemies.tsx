@@ -4,7 +4,7 @@ import { Enemy } from "../../../logic/types.ts";
 import { Container } from "@pixi/react";
 import EnemyGraphics from "./EnemyGraphics.tsx";
 import { playSound } from "../../../sounds.ts";
-import { ScaleContextValue } from "../../../common/ScaleProvider/ScaleProvider.tsx";
+import { ScaleContextValue } from "../../../utils/scaleContext.tsx";
 
 interface EnemiesProps {
   width: number;

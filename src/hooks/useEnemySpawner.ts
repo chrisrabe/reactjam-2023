@@ -1,7 +1,7 @@
 import { Vector2D } from "../logic/types.ts";
 import { nanoid } from "nanoid";
 import { useEffect, useRef } from "react";
-import { ScaleContextValue } from "../common/ScaleProvider/ScaleProvider.tsx";
+import { ScaleContextValue } from "../utils/scaleContext.tsx";
 
 const SPAWN_INTERVAL = 1250; // ms
 

@@ -8,7 +8,7 @@ import { GameState, PlayerRole } from "../../logic/types.ts";
 import OverwatchMarker from "./OverwatchMarker";
 import Joystick from "./Joystick";
 import RoleBG from "../../common/RoleBG";
-import { ScaleContextValue } from "../../common/ScaleProvider/ScaleProvider.tsx";
+import { ScaleContextValue } from "../../utils/scaleContext.tsx";
 
 interface GameScreenProps {
   game: GameState;

@@ -7,7 +7,7 @@ import { Stage } from "@pixi/react";
 import { playSound } from "../../sounds.ts";
 import Tutorial from "./Tutorial";
 import RoleBG from "../../common/RoleBG";
-import { ScaleContextValue } from "../../common/ScaleProvider/ScaleProvider.tsx";
+import { ScaleContextValue } from "../../utils/scaleContext.tsx";
 
 interface LobbySceneProps {
   game: GameState;
