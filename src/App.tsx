@@ -27,8 +27,6 @@ function App() {
   useGameStateListener({ onGameStateChange });
 
   useEffect(() => {
-    return; // disable sound
-
     const listener = () => {
       playSound("background", { loop: true });
     };
