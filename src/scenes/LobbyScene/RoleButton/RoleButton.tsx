@@ -43,7 +43,7 @@ const RoleButton: React.FC<RoleButtonProps> = ({
       disabled={disabled}
     >
       <img
-        src={`/assets/avatars/${role}_avatar.png`}
+        src={`/assets/avatars/${role}_avatar.jpg`}
         alt="Pilot avatar"
         style={{
           height: "inherit",
