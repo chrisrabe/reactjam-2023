@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { TilingSprite, useTick } from "@pixi/react";
 import { Vector2D } from "../../logic/types.ts";
+import starTile from "../../assets/bg/star_tile.jpg";
 
 interface StarBGProps {
   width: number;
@@ -21,7 +22,7 @@ const StarBG: React.FC<StarBGProps> = ({ width, height }) => {
 
   return (
     <TilingSprite
-      image="/assets/bg/star_tile.jpg"
+      image={starTile}
       width={width}
       height={height}
       tilePosition={tilePos}

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Graphics, TilingSprite, useTick } from "@pixi/react";
 import { Graphics as PixiGraphics } from "pixi.js";
+import gridTile from "../../assets/bg/grid_tile.jpg";
 
 interface RadarBGProps {
   width: number;
@@ -34,7 +35,7 @@ const RadarBG: React.FC<RadarBGProps> = ({ width, height }) => {
   return (
     <>
       <TilingSprite
-        image="/assets/bg/grid_tile.jpg"
+        image={gridTile}
         width={width}
         height={height}
         tilePosition={{ x: 0, y: 0 }}
