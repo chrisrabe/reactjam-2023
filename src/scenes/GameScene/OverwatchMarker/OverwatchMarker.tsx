@@ -24,8 +24,7 @@ const OverwatchMarker: React.FC<OverwatchMarkerProps> = ({
   marker,
   scaleContext,
 }) => {
-  const { gameToClient, clientToGame } = scaleContext;
-
+  const scaleContextRef = useRef<ScaleContextValue>(scaleContext); // this keeps scale in graphics redraw updated in real-time
   const removeMarker = useRef<NodeJS.Timeout>();
   const [isVisible, setIsVisible] = useState(marker !== null);
 
@@ -41,13 +40,21 @@ const OverwatchMarker: React.FC<OverwatchMarkerProps> = ({
     }
   }, [marker]);
 
+  useEffect(() => {
+    scaleContextRef.current = scaleContext;
+  }, [scaleContext]);
+
   const onTap = ({ position }: { position: Vector2D }) => {
     playSound("ping", { once: true });
+    const { clientToGame } = scaleContextRef.current;
+
+    const gamePos = {
+      x: position.x * clientToGame.width,
+      y: position.y * clientToGame.height,
+    };
+
     Rune.actions.setOverwatchMarker({
-      position: {
-        x: position.x * clientToGame.width,
-        y: position.y * clientToGame.height,
-      },
+      position: gamePos,
     });
   };
 
@@ -59,12 +66,19 @@ const OverwatchMarker: React.FC<OverwatchMarkerProps> = ({
   const draw = (g: PixiGraphics) => {
     if (!marker) return;
 
+    const { gameToClient } = scaleContextRef.current;
+
+    const clientPos = {
+      x: marker.position.x * gameToClient.width,
+      y: marker.position.y * gameToClient.height,
+    };
+
     g.clear();
-    g.position.set(marker.position.x, marker.position.y);
+    g.position.set(clientPos.x, clientPos.y);
 
     g.lineStyle(2, "yellow");
 
-    const lineLength = 25 * gameToClient.width; // Length of each line of the "X"
+    const lineLength = 25;
 
     // Draw first line of the "X"
     g.moveTo(-lineLength / 2, -lineLength / 2);

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Stage } from "@pixi/react";
 import Ship from "./Ship";
 import Bullets from "./Bullets";
@@ -7,19 +7,20 @@ import HUD from "./HUD";
 import { GameState, PlayerRole } from "../../logic/types.ts";
 import OverwatchMarker from "./OverwatchMarker";
 import Joystick from "./Joystick";
-import RadarBG from "../../common/RadarBG";
-import StarBG from "../../common/StarBG";
 import RoleBG from "../../common/RoleBG";
-import { ScaleContext } from "../../common/ScaleProvider/ScaleProvider.tsx";
+import { ScaleContextValue } from "../../common/ScaleProvider/ScaleProvider.tsx";
 
 interface GameScreenProps {
   game: GameState;
   playerId?: string;
+  scaleContextValue: ScaleContextValue;
 }
 
-const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
-  const scaleContextValue = useContext(ScaleContext);
-
+const GameScene: React.FC<GameScreenProps> = ({
+  game,
+  playerId,
+  scaleContextValue,
+}) => {
   const { gameToClient } = scaleContextValue;
 
   const width = game.dimensions.width * gameToClient.width;
@@ -49,11 +50,13 @@ const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
           rotation={game.ship.rotation}
           hasTurret={playerRole !== PlayerRole.Overwatch}
         />
-        <OverwatchMarker
-          role={playerRole}
-          marker={game.overwatchMarker}
-          scaleContext={scaleContextValue}
-        />
+        {playerRole === PlayerRole.Overwatch && (
+          <OverwatchMarker
+            role={playerRole}
+            marker={game.overwatchMarker}
+            scaleContext={scaleContextValue}
+          />
+        )}
         {playerRole !== PlayerRole.Overwatch && (
           <Bullets bullets={game.bullets} scaleContext={gameToClient} />
         )}

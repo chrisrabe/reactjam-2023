@@ -9,7 +9,6 @@ import LobbyScene from "./scenes/LobbyScene";
 import { Players } from "rune-games-sdk";
 import { playSound } from "./sounds.ts";
 import useResize from "./hooks/useResize.ts";
-import ScaleProvider from "./common/ScaleProvider";
 
 function App() {
   const [playerId, setPlayerId] = useState<string>();
@@ -57,26 +56,31 @@ function App() {
     height: game.dimensions.height / height,
   };
 
+  const scaleContext = {
+    gameToClient,
+    clientToGame,
+  };
+
   return (
-    <ScaleProvider
-      value={{
-        gameToClient,
-        clientToGame,
-      }}
-    >
+    <>
       {(game.stage === GameStage.Preparing ||
         game.stage === GameStage.Starting) && (
         <LobbyScene
           game={game}
           playerId={playerId}
           players={playersRef.current}
+          scaleContextValue={scaleContext}
         />
       )}
       {(game.stage === GameStage.Playing ||
         game.stage === GameStage.GameOver) && (
-        <GameScene game={game} playerId={playerId} />
+        <GameScene
+          game={game}
+          playerId={playerId}
+          scaleContextValue={scaleContext}
+        />
       )}
-    </ScaleProvider>
+    </>
   );
 }
 

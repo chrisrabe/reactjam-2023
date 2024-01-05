@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { GameStage, GameState, PlayerRole } from "../../logic/types.ts";
 import RoleButton from "./RoleButton";
 import { Players } from "rune-games-sdk";
@@ -7,12 +7,13 @@ import { Stage } from "@pixi/react";
 import { playSound } from "../../sounds.ts";
 import Tutorial from "./Tutorial";
 import RoleBG from "../../common/RoleBG";
-import { ScaleContext } from "../../common/ScaleProvider/ScaleProvider.tsx";
+import { ScaleContextValue } from "../../common/ScaleProvider/ScaleProvider.tsx";
 
 interface LobbySceneProps {
   game: GameState;
   playerId: string;
   players: Players;
+  scaleContextValue: ScaleContextValue;
 }
 
 const roles = Object.values(PlayerRole).filter(
@@ -26,8 +27,13 @@ const roleColors: Record<PlayerRole, string> = {
   spectator: "#38BDF8",
 };
 
-const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
-  const { gameToClient } = useContext(ScaleContext);
+const LobbyScene: React.FC<LobbySceneProps> = ({
+  game,
+  playerId,
+  players,
+  scaleContextValue,
+}) => {
+  const { gameToClient } = scaleContextValue;
 
   const getPlayerNamesWithRole = (role: PlayerRole) =>
     Object.values(game.players)
