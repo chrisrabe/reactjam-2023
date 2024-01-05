@@ -2,7 +2,7 @@ import { Vector2D } from "../logic/types.ts";
 import { nanoid } from "nanoid";
 import { useEffect, useRef } from "react";
 
-const SPAWN_INTERVAL = 2000; // ms
+const SPAWN_INTERVAL = 1250; // ms
 
 interface EnemySpawnerProps {
   screenWidth: number;
