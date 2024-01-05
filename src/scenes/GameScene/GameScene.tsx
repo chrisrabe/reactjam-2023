@@ -7,8 +7,8 @@ import HUD from "./HUD";
 import { GameState, PlayerRole } from "../../logic/types.ts";
 import OverwatchMarker from "./OverwatchMarker";
 import Joystick from "./Joystick";
-import RadarBG from "./RadarBG";
-import StarBG from "../../common/StarBG";
+import RadarBG from "../../backgrounds/RadarBG";
+import StarBG from "../../backgrounds/StarBG";
 
 interface GameScreenProps {
   game: GameState;

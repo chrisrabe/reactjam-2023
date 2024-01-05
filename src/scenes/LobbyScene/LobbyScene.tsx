@@ -4,7 +4,8 @@ import RoleButton from "./RoleButton";
 import { Players } from "rune-games-sdk";
 import ReadyButton from "./ReadyButton";
 import { Stage } from "@pixi/react";
-import StarBG from "../../common/StarBG";
+import StarBG from "../../backgrounds/StarBG";
+import RadarBG from "../../backgrounds/RadarBG";
 
 interface LobbySceneProps {
   game: GameState;
@@ -29,6 +30,7 @@ const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
       .filter((p) => p.role === role)
       .map((p) => (p.id === playerId ? "You" : players[p.id].displayName));
 
+  const playerRole = game.players[playerId].role;
   const playerRoleColor = roleColors[game.players[playerId].role];
 
   return (
@@ -40,7 +42,12 @@ const LobbyScene: React.FC<LobbySceneProps> = ({ game, playerId, players }) => {
           background: "18181B",
         }}
       >
-        <StarBG width={window.innerWidth} height={window.innerHeight} />
+        {playerRole === PlayerRole.Pilot && (
+          <StarBG width={window.innerWidth} height={window.innerHeight} />
+        )}
+        {playerRole === PlayerRole.Overwatch && (
+          <RadarBG width={window.innerWidth} height={window.innerHeight} />
+        )}
       </Stage>
       <div
         style={{
