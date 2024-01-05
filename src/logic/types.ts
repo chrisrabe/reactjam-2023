@@ -21,6 +21,7 @@ export interface GameState {
 }
 
 export type GameActions = {
+  setClient: (params: Client) => void;
   setRotation: (rotation: number) => void;
   shoot: (id: string) => void;
   spawnEnemy: (params: { position: Vector2D; id: string }) => void;
@@ -64,6 +65,12 @@ export interface Player {
   id: string;
   role: PlayerRole;
   isReady: boolean;
+  client?: Client;
+}
+
+interface Client {
+  width: number;
+  height: number;
 }
 
 export interface Vector2D {

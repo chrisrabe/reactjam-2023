@@ -45,6 +45,12 @@ Rune.initLogic({
     };
   },
   actions: {
+    setClient: (params, { game, playerId }) => {
+      game.players[playerId].client = {
+        width: params.width,
+        height: params.height,
+      };
+    },
     setRotation: (rotation, { game }) => {
       game.desiredRotation = rotation;
     },
