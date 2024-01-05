@@ -1,9 +1,9 @@
 const soundFiles = {
-  background: "assets/sounds/bg_sound.wav",
-  beep: "assets/sounds/beep.wav",
-  laser: "assets/sounds/laser.mp3",
-  ping: "assets/sounds/ping.wav",
-  explosion: "assets/sounds/explosion.wav",
+  background: "sounds/bg_sound.mp3",
+  beep: "sounds/beep.wav",
+  laser: "sounds/laser.mp3",
+  ping: "sounds/ping.wav",
+  explosion: "sounds/explosion.wav",
 };
 
 const sounds: Record<string, HTMLAudioElement> = {};
