@@ -1,6 +1,7 @@
 {
   "name": "phantom-radar",
   "private": true,
+  "description": "Destroy Phantoms with your friends! Phantom Radar is a cooperative arcade shooter game that requires coordination with your peers. Play as the Pilot to defend the ship, or guide the pilot using advanced radar as the Overwatch. GPT-4 was used for art.\n",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
