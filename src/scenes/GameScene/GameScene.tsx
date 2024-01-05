@@ -54,9 +54,9 @@ const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
           marker={game.overwatchMarker}
           scaleContext={scaleContextValue}
         />
-        {/*{playerRole !== PlayerRole.Overwatch && (*/}
-        {/*  <Bullets bullets={game.bullets} />*/}
-        {/*)}*/}
+        {playerRole !== PlayerRole.Overwatch && (
+          <Bullets bullets={game.bullets} scaleContext={gameToClient} />
+        )}
         {/*<Enemies*/}
         {/*  enemies={game.enemies}*/}
         {/*  hasSpawner={playerRole !== PlayerRole.Pilot}*/}
