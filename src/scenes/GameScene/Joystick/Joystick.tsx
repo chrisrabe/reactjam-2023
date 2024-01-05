@@ -10,7 +10,11 @@ import { playSound } from "../../../sounds.ts";
 
 const THROTTLE_LIMIT = 100; // 100ms (10 actions / sec)
 
-const Joystick: React.FC = () => {
+interface JoystickProps {
+  scale: number;
+}
+
+const Joystick: React.FC<JoystickProps> = ({ scale }) => {
   const joystickPos = useRef<Vector2D>();
   const [rotation, setRotation] = useState(0);
   const hasRotationLine = useRef<boolean>(false);
@@ -59,7 +63,7 @@ const Joystick: React.FC = () => {
       {joystickPos.current && (
         <JoystickGraphics
           position={joystickPos.current}
-          size={50}
+          size={50 * scale}
           rotation={rotation}
           hasRotationLine={hasRotationLine.current}
         />
