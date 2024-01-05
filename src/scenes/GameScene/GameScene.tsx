@@ -7,24 +7,18 @@ import HUD from "./HUD";
 import { GameState, PlayerRole } from "../../logic/types.ts";
 import OverwatchMarker from "./OverwatchMarker";
 import Joystick from "./Joystick";
-import RadarBG from "../../backgrounds/RadarBG";
-import StarBG from "../../backgrounds/StarBG";
+import RadarBG from "../../common/RadarBG";
+import StarBG from "../../common/StarBG";
+import RoleBG from "../../common/RoleBG";
 
 interface GameScreenProps {
   game: GameState;
   playerId?: string;
-  scaleWidth: number;
-  scaleHeight: number;
 }
 
-const GameScene: React.FC<GameScreenProps> = ({
-  game,
-  playerId,
-  scaleHeight,
-  scaleWidth,
-}) => {
-  const width = game.dimensions.width * scaleWidth;
-  const height = game.dimensions.height * scaleHeight;
+const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
+  const width = game.dimensions.width;
+  const height = game.dimensions.height;
 
   const playerRole = playerId
     ? game.players[playerId].role
@@ -39,12 +33,7 @@ const GameScene: React.FC<GameScreenProps> = ({
           background: "18181B",
         }}
       >
-        {playerRole === PlayerRole.Overwatch && (
-          <RadarBG width={width} height={height} />
-        )}
-        {playerRole === PlayerRole.Pilot && (
-          <StarBG width={width} height={height} />
-        )}
+        <RoleBG width={width} height={height} playerRole={playerRole} />
         {playerRole === PlayerRole.Pilot && <Joystick />}
         <Ship
           x={game.ship.position.x}

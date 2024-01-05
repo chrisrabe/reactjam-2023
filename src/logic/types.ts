@@ -21,7 +21,7 @@ export interface GameState {
   dimensions: Dimensions;
 }
 
-interface Dimensions {
+export interface Dimensions {
   width: number;
   height: number;
 }

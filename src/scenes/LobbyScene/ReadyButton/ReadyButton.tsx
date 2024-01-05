@@ -46,12 +46,9 @@ const ReadyButton: React.FC<ReadyButtonProps> = ({
         border: "none",
         backgroundColor: disabled ? "gray" : color,
         padding: "1rem",
-        fontSize: 24,
+        fontSize: 24 * scale,
         fontWeight: "bold",
         borderRadius: 20,
-        gap: 5,
-        display: "flex",
-        justifyContent: "center",
         transform: `scale(${scale})`,
       }}
       disabled={disabled || stage === GameStage.Starting}

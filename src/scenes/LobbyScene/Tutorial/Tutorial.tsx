@@ -39,7 +39,7 @@ const Tutorial: React.FC<TutorialProps> = ({ role, color, scale }) => {
         style={{
           border: "none",
           backgroundColor: "unset",
-          padding: "1rem",
+          padding: 20 * scale,
           fontSize: 16 * scale,
           color: "white",
         }}
@@ -59,7 +59,7 @@ const Tutorial: React.FC<TutorialProps> = ({ role, color, scale }) => {
           <div
             style={{
               background: "#18181B",
-              padding: 20,
+              padding: 20 * scale,
               borderRadius: 20,
               boxShadow: `0 0 15px 3px ${color}`,
               transform: `scale(${scale})`,
