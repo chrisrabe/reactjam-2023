@@ -37,6 +37,7 @@ const GameScene: React.FC<GameScreenProps> = ({ game, playerId }) => {
           y={game.ship.position.y}
           size={game.ship.size}
           rotation={game.ship.rotation}
+          hasTurret={playerRole !== PlayerRole.Overwatch}
         />
         <OverwatchMarker role={playerRole} marker={game.overwatchMarker} />
         {playerRole !== PlayerRole.Overwatch && (
