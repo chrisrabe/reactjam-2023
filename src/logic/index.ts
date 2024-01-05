@@ -104,7 +104,7 @@ Rune.initLogic({
     moveEnemies(game);
     updateScore(game);
     purgeOutOfBounds(game);
-    // checkGameOver(game);
+    checkGameOver(game);
   },
   updatesPerSecond: 30,
 });
