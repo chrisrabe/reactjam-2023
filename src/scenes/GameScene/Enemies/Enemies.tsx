@@ -14,6 +14,42 @@ interface EnemiesProps {
   scaleContext: ScaleContextValue;
 }
 
+const getVisibleEnemies = (
+  enemies: Record<string, Enemy>,
+): Record<string, Enemy> => {
+  return Object.values(enemies).reduce<Record<string, Enemy>>((a, enemy) => {
+    if (enemy.isVisible) {
+      a[enemy.id] = enemy;
+    }
+    return a;
+  }, {});
+};
+
+const checkIfKilledEnemies = (
+  prevEnemies: Record<string, Enemy>,
+  enemies: Record<string, Enemy>,
+) => {
+  for (const enemyId of Object.keys(enemies)) {
+    if (prevEnemies[enemyId]) {
+      delete prevEnemies[enemyId];
+    }
+  }
+  return Object.keys(prevEnemies).length > 0;
+};
+
+const checkHasNewVisibleEnemies = (
+  prevVisibleEnemies: Record<string, Enemy>,
+  enemies: Record<string, Enemy>,
+) => {
+  const curVisibleEnemies = getVisibleEnemies(enemies);
+  for (const id of Object.keys(prevVisibleEnemies)) {
+    if (curVisibleEnemies[id]) {
+      delete curVisibleEnemies[id];
+    }
+  }
+  return Object.keys(curVisibleEnemies).length > 0;
+};
+
 const Enemies: React.FC<EnemiesProps> = ({
   width,
   height,
@@ -21,7 +57,11 @@ const Enemies: React.FC<EnemiesProps> = ({
   hasSpawner,
   scaleContext,
 }) => {
+  const prevVisibleEnemiesRef = useRef<Record<string, Enemy>>(
+    getVisibleEnemies(enemies),
+  );
   const prevEnemiesRef = useRef<Record<string, Enemy>>(enemies);
+
   useEnemySpawner({
     screenWidth: width,
     screenHeight: height,
@@ -30,18 +70,26 @@ const Enemies: React.FC<EnemiesProps> = ({
   });
 
   const { gameToClient } = scaleContext;
-  const prevEnemies = { ...prevEnemiesRef.current };
+  const hasKilledEnemy = checkIfKilledEnemies(
+    { ...prevEnemiesRef.current },
+    enemies,
+  );
 
-  for (const enemyId of Object.keys(enemies)) {
-    if (prevEnemies[enemyId]) {
-      delete prevEnemies[enemyId];
-    }
-  }
-  const hasKilledEnemy = Object.keys(prevEnemies).length > 0;
+  const hasNewVisibleEnemies = checkHasNewVisibleEnemies(
+    prevVisibleEnemiesRef.current,
+    enemies,
+  );
+
+  // Update references
   prevEnemiesRef.current = enemies;
+  prevVisibleEnemiesRef.current = getVisibleEnemies(enemies);
 
+  // SFX
   if (hasKilledEnemy) {
     playSound("explosion", { once: true });
+  }
+  if (hasNewVisibleEnemies) {
+    playSound("ping", { once: true });
   }
 
   return (
