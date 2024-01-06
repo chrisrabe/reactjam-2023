@@ -23,6 +23,9 @@ const Overlay: React.FC<OverlayProps> = ({
         position: "absolute",
         top: "25%",
         width: "80%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
       onClick={() => setIsOpen(false)}
     >
@@ -33,6 +36,7 @@ const Overlay: React.FC<OverlayProps> = ({
           borderRadius: 20,
           boxShadow: `0 0 15px 3px ${color}`,
           transform: `scale(${scale})`,
+          width: "100%",
         }}
       >
         {children}

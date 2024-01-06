@@ -9,6 +9,7 @@ import LobbyScene from "./scenes/LobbyScene";
 import { Players } from "rune-games-sdk";
 import { playSound } from "./sounds.ts";
 import useResize from "./hooks/useResize.ts";
+import EndOverlay from "./scenes/EndOverlay";
 
 function App() {
   const [playerId, setPlayerId] = useState<string>();
@@ -76,6 +77,13 @@ function App() {
           game={game}
           playerId={playerId}
           scaleContextValue={scaleContext}
+        />
+      )}
+      {game.stage === GameStage.GameOver && (
+        <EndOverlay
+          scale={scaleContext.gameToClient.width}
+          role={game.players[playerId].role}
+          score={game.score}
         />
       )}
     </>

@@ -61,9 +61,11 @@ const Tutorial: React.FC<TutorialProps> = ({ role, color, scale }) => {
         scale={scale}
         color={color}
       >
-        <h2 style={{ textTransform: "capitalize" }}>{role}</h2>
-        <p>{instructions.objective}</p>
-        <ul>
+        <h2 style={{ textTransform: "capitalize", fontSize: 24 * scale }}>
+          {role}
+        </h2>
+        <p style={{ fontSize: 16 * scale }}>{instructions.objective}</p>
+        <ul style={{ fontSize: 16 * scale }}>
           {instructions.controls.map((control) => (
             <li key={control}>{control}</li>
           ))}
