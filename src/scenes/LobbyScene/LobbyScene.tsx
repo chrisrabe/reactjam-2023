@@ -9,6 +9,7 @@ import Tutorial from "./Tutorial";
 import RoleBG from "../../common/RoleBG";
 import { ScaleContextValue } from "../../utils/scaleContext.tsx";
 import logo from "../../assets/logo.svg";
+import { roleColors } from "../../utils/role.ts";
 
 interface LobbySceneProps {
   game: GameState;
@@ -21,12 +22,6 @@ const roles = Object.values(PlayerRole).filter(
   // TODO: Add Spectator support in future.
   (role) => role != PlayerRole.Spectator,
 );
-
-const roleColors: Record<PlayerRole, string> = {
-  overwatch: "#C084FC",
-  pilot: "#A3E635",
-  spectator: "#38BDF8",
-};
 
 const LobbyScene: React.FC<LobbySceneProps> = ({
   game,
@@ -111,7 +106,10 @@ const LobbyScene: React.FC<LobbySceneProps> = ({
                 Rune.actions.setRole(role);
               }}
               color={roleColors[role]}
-              disabled={game.stage === GameStage.Starting}
+              disabled={
+                game.stage === GameStage.Starting ||
+                game.stage === GameStage.Playing
+              }
             />
           ))}
         </div>
