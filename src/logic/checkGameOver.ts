@@ -12,7 +12,10 @@ const checkGameOver = (game: GameState) => {
 
     if (distance < collisionThreshold + enemy.size / 2) {
       game.stage = GameStage.GameOver;
-      Rune.gameOver();
+      Rune.gameOver({
+        players: {},
+        delayPopUp: true,
+      });
       break;
     }
   }

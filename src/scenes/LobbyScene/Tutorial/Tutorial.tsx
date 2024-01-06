@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { PlayerRole } from "../../../logic/types.ts";
+import Overlay from "../../../common/Overlay";
 
 interface TutorialProps {
   role: PlayerRole;
@@ -54,34 +55,20 @@ const Tutorial: React.FC<TutorialProps> = ({ role, color, scale }) => {
       >
         How to play?
       </button>
-      {isOpen && (
-        <div
-          style={{
-            position: "absolute",
-            top: "25%",
-            width: "80%",
-          }}
-          onClick={() => setIsOpen(false)}
-        >
-          <div
-            style={{
-              background: "#18181B",
-              padding: 20 * scale,
-              borderRadius: 20,
-              boxShadow: `0 0 15px 3px ${color}`,
-              transform: `scale(${scale})`,
-            }}
-          >
-            <h2 style={{ textTransform: "capitalize" }}>{role}</h2>
-            <p>{instructions.objective}</p>
-            <ul>
-              {instructions.controls.map((control) => (
-                <li key={control}>{control}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
+      <Overlay
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        scale={scale}
+        color={color}
+      >
+        <h2 style={{ textTransform: "capitalize" }}>{role}</h2>
+        <p>{instructions.objective}</p>
+        <ul>
+          {instructions.controls.map((control) => (
+            <li key={control}>{control}</li>
+          ))}
+        </ul>
+      </Overlay>
     </>
   );
 };
